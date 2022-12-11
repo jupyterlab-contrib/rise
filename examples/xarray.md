@@ -15,12 +15,12 @@ kernelspec:
 import xarray as xr
 ```
 
-this is to illustrate a useful patch for dealing with xarray's `_repr_html_()` 
+this is to illustrate a useful patch for dealing with xarray's `_repr_html_()`
 
 see also
 
-* https://github.com/damianavila/RISE/issues/594
-* `rise.css` in this folder
+- https://github.com/damianavila/RISE/issues/594
+- `rise.css` in this folder
 
 ```{code-cell} ipython3
 ds = xr.tutorial.open_dataset('air_temperature')

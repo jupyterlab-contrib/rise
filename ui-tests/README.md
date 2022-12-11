@@ -2,7 +2,7 @@
 
 This folder contains the integration tests of the extension.
 
-They are defined using [Playwright](https://playwright.dev/docs/intro) test runner
+They are defined using [Playwright](https://playwright.dev/docs/intro.html) test runner
 and [Galata](https://github.com/jupyterlab/jupyterlab/tree/master/galata) helper.
 
 The Playwright configuration is defined in [playwright.config.js](./playwright.config.js).

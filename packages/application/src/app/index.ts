@@ -15,7 +15,9 @@ import { BoxLayout, Widget } from '@lumino/widgets';
 /**
  * The Rise application shell token.
  */
-export const IRetroShell = new Token<RiseShell>('jupyterlab-rise-application:IRiseShell');
+export const IRetroShell = new Token<RiseShell>(
+  'jupyterlab-rise-application:IRiseShell'
+);
 
 export class RiseShell extends Widget implements JupyterFrontEnd.IShell {
   constructor() {

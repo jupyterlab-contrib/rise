@@ -9,8 +9,8 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge').default;
 const { ModuleFederationPlugin } = webpack.container;
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const Build = require('@jupyterlab/builder').Build;
 const baseConfig = require('@jupyterlab/builder/lib/webpack.config.base');
@@ -145,7 +145,9 @@ function createShared(packageData) {
     // If a package is set as singleton but absent of the shared list,
     // recommend adding it to resolution and fail.
     throw new Error(
-      `Singleton packages must have a resolved version number; these do not: ${missingPkgs.join(', ')} Please add them to packages.json#resolutions section.`
+      `Singleton packages must have a resolved version number; these do not: ${missingPkgs.join(
+        ', '
+      )} Please add them to packages.json#resolutions section.`
     );
   }
 

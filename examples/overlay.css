@@ -7,16 +7,16 @@
  */
 
 div.myheader {
-    position: absolute;
-    margin: 30px;
-    left: 8%;
-    background: blue;
-    font-size: xx-large;
+  position: absolute;
+  margin: 30px;
+  left: 8%;
+  background: blue;
+  font-size: xx-large;
 }
 
 div.myfooter {
-    position: absolute;
-    background: red;
-    font-size: 120%;
-    right: 10%;
+  position: absolute;
+  background: red;
+  font-size: 120%;
+  right: 10%;
 }

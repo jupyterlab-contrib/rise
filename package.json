@@ -49,7 +49,7 @@
     "prettier:base": "prettier \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}\"",
     "prettier:check": "jlpm prettier:base --check",
     "stylelint": "jlpm stylelint:check --fix",
-    "stylelint:check": "stylelint --cache \"style/**/*.css\"",
+    "stylelint:check": "stylelint --cache \"packages/*/style/**/*.css\"",
     "watch": "run-p watch:lib watch:app",
     "watch:app": "lerna exec --stream --scope \"rise-app\" yarn watch",
     "watch:lib": "lerna exec --stream --scope \"jupyterlab-rise-application\" --scope \"jupyterlab-rise\" yarn watch"

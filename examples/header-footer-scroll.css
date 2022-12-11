@@ -5,26 +5,26 @@
  */
 
 #rise-header {
-    margin: 10px;
-    left: 10%;
+  margin: 10px;
+  left: 10%;
 }
 
 #rise-footer {
-    margin: 10px;
-    left: 10%;
+  margin: 10px;
+  left: 10%;
 }
 
 #rise-backimage {
-    opacity: 0.20;
+  opacity: 0.2;
 }
 
 /* TODO: maybe we need to port this to main.css?  */
 .reveal img {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 /* to regulate the amount of space left to the scrolling area */
 section.rise-scroll {
-    margin-top: 100px;  /* a bit more than should match the header size */
-    height: 85vh;       /* to leave some space below for the footer */
+  margin-top: 100px; /* a bit more than should match the header size */
+  height: 85vh; /* to leave some space below for the footer */
 }

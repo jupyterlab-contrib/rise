@@ -1,7 +1,8 @@
 ---
 jupytext:
   cell_metadata_filter: all,-hidden,-heading_collapsed,-run_control,-trusted
-  notebook_metadata_filter: all, -jupytext.text_representation.jupytext_version, -jupytext.text_representation.format_version,
+  notebook_metadata_filter:
+    all, -jupytext.text_representation.jupytext_version, -jupytext.text_representation.format_version,
     -language_info.version, -language_info.codemirror_mode.version, -language_info.codemirror_mode,
     -language_info.file_extension, -language_info.mimetype, -toc
   text_representation:
@@ -38,31 +39,31 @@ regular slides (not too much content) will show up just nice
 
 # Slide 2
 
-* now for a slide that has a large (high) content
-* because `scroll=False` we don't get to scroll vertically
-* we create a slide
-* with a rather extensive height
-* so as to see 
-* if we can use `"scroll": true` in our settings
-* and check that the footer
-* does not overlap the contents
-* that should scroll within the available space
-* between header and footer
-* and again
-* we create a slide
-* with a rather extensive height
-* so as to see 
-* if we can use `"scroll": true` in our settings
-* and check that the footer
-* does not overlap the contents
-* that should scroll within the available space
-* between header and footer
-* and a 3rd time
-* we create a slide
-* with a rather extensive height
-* so as to see 
-* if we can use `"scroll": true` in our settings
-* and check that the footer
-* does not overlap the contents
-* that should scroll within the available space
-* between header and footer
+- now for a slide that has a large (high) content
+- because `scroll=False` we don't get to scroll vertically
+- we create a slide
+- with a rather extensive height
+- so as to see
+- if we can use `"scroll": true` in our settings
+- and check that the footer
+- does not overlap the contents
+- that should scroll within the available space
+- between header and footer
+- and again
+- we create a slide
+- with a rather extensive height
+- so as to see
+- if we can use `"scroll": true` in our settings
+- and check that the footer
+- does not overlap the contents
+- that should scroll within the available space
+- between header and footer
+- and a 3rd time
+- we create a slide
+- with a rather extensive height
+- so as to see
+- if we can use `"scroll": true` in our settings
+- and check that the footer
+- does not overlap the contents
+- that should scroll within the available space
+- between header and footer
