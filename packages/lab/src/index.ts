@@ -81,6 +81,8 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
     restorer: ILayoutRestorer | null,
     settingRegistry: ISettingRegistry | null
   ): IRisePreviewTracker => {
+    console.log('JupyterLab extension jupyterlab-rise is activated!');
+
     // Create a widget tracker for Rise Previews.
     const tracker = new WidgetTracker<RisePreview>({
       namespace: 'rise'

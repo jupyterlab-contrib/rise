@@ -1,6 +1,7 @@
 # jupyterlab_rise
 
 [![Github Actions Status](https://github.com/jupyterlab-contrib/rise/workflows/Build/badge.svg)](https://github.com/jupyterlab-contrib/rise/actions/workflows/build.yml)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jupyterlab-contrib/rise/main?urlpath=lab/tree/examples/README.ipynb)
+
 RISE: "Live" Reveal.js JupyterLab Slideshow extension.
 
 ## Requirements
