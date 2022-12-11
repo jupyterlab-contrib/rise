@@ -1,12 +1,19 @@
 {
-  "name": "jupyterlab-rise",
+  "name": "jupyterlab-rise-meta",
   "version": "0.1.0",
-  "description": "RISE: "Live" Reveal.js JupyterLab Slideshow extension.",
+  "description": "RISE: \"Live\" Reveal.js JupyterLab Slideshow extension.",
   "keywords": [
     "jupyter",
     "jupyterlab",
     "jupyterlab-extension"
   ],
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "app",
+      "packages/*"
+    ]
+  },
   "homepage": "https://github.com/jupyterlab-contrib/rise",
   "bugs": {
     "url": "https://github.com/jupyterlab-contrib/rise/issues"
@@ -16,32 +23,26 @@
     "name": "Frederic Collonval",
     "email": "fcollonval@gmail.com"
   },
-  "files": [
-    "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
-    "style/**/*.{css,js,eot,gif,html,jpg,json,png,svg,woff2,ttf}",
-    "schema/*.json"
+  "contributors": [
+    {
+      "name": "Thierry Parmentelat",
+      "url": "https://github.com/parmentelat"
+    },
+    {
+      "name": "Yiqin Zhang"
+    }
   ],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "style": "style/index.css",
   "repository": {
     "type": "git",
     "url": "https://github.com/jupyterlab-contrib/rise.git"
   },
   "scripts": {
-    "build": "jlpm build:lib && jlpm build:labextension:dev",
-    "build:prod": "jlpm clean && jlpm build:lib && jlpm build:labextension",
-    "build:labextension": "jupyter labextension build .",
-    "build:labextension:dev": "jupyter labextension build --development True .",
-    "build:lib": "tsc",
-    "clean": "jlpm clean:lib",
-    "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
-    "clean:lintcache": "rimraf .eslintcache .stylelintcache",
-    "clean:labextension": "rimraf jupyterlab_rise/labextension",
-    "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
+    "build": "lerna run build",
+    "build:prod": "lerna run build:prod",
+    "clean": "lerna run clean",
+    "install": "lerna bootstrap",
     "eslint": "jlpm eslint:check --fix",
     "eslint:check": "eslint . --cache --ext .ts,.tsx",
-    "install:extension": "jlpm build",
     "lint": "jlpm stylelint && jlpm prettier && jlpm eslint",
     "lint:check": "jlpm stylelint:check && jlpm prettier:check && jlpm eslint:check",
     "prettier": "jlpm prettier:base --write --list-different",
@@ -49,10 +50,9 @@
     "prettier:check": "jlpm prettier:base --check",
     "stylelint": "jlpm stylelint:check --fix",
     "stylelint:check": "stylelint --cache \"style/**/*.css\"",
-    "test": "jest --coverage",
-    "watch": "run-p watch:src watch:labextension",
-    "watch:src": "tsc -w",
-    "watch:labextension": "jupyter labextension watch ."
+    "watch": "run-p watch:lib watch:app",
+    "watch:app": "lerna exec --stream --scope \"rise-app\" yarn watch",
+    "watch:lib": "lerna exec --stream --scope \"jupyterlab-rise-application\" --scope \"jupyterlab-rise\" yarn watch"
   },
   "dependencies": {
     "@jupyterlab/application": "^3.1.0",
@@ -70,6 +70,7 @@
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.0.0",
+    "lerna": "^6.1.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.1.1",
     "rimraf": "^3.0.2",
@@ -78,21 +79,8 @@
     "stylelint-config-recommended": "^6.0.0",
     "stylelint-config-standard": "~24.0.0",
     "stylelint-prettier": "^2.0.0",
-    "typescript": "~4.1.3",
-    "ts-jest": "^26.0.0"
-  },
-  "sideEffects": [
-    "style/*.css",
-    "style/index.js"
-  ],
-  "styleModule": "style/index.js",
-  "publishConfig": {
-    "access": "public"
-  },
-  "jupyterlab": { 
-    "extension": true,
-    "outputDir": "jupyterlab_rise/labextension",
-    "schemaDir": "schema"
+    "ts-jest": "^26.0.0",
+    "typescript": "~4.1.3"
   },
   "jupyter-releaser": {
     "hooks": {

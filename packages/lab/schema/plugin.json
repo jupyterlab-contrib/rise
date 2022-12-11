@@ -1,0 +1,279 @@
+{
+  "title": "RISE",
+  "description": "RISE settings.",
+  "jupyter.lab.setting-icon-label": "RISE slideshow",
+  "jupyter.lab.menus": {
+    "main": [
+      {
+        "id": "jp-mainmenu-view",
+        "items": [
+          { "type": "separator" },
+          {
+            "command": "RISE:preview"
+          },
+          {
+            "command": "RISE:fullscreen-plugin"
+          },
+          { "type": "separator" }
+        ]
+      }
+    ]
+  },
+  "jupyter.lab.shortcuts": [
+    {
+      "command": "RISE:preview",
+      "keys": ["Alt R"],
+      "selector": ".jp-Notebook:focus"
+    },
+    {
+      "command": "RISE:set-slide-type",
+      "args": { "type": "slide" },
+      "keys": ["Shift I"],
+      "selector": ".jp-Notebook:focus"
+    },
+    {
+      "command": "RISE:set-slide-type",
+      "args": { "type": "subslide" },
+      "keys": ["Shift B"],
+      "selector": ".jp-Notebook:focus"
+    },
+    {
+      "command": "RISE:set-slide-type",
+      "args": { "type": "fragment" },
+      "keys": ["Shift G"],
+      "selector": ".jp-Notebook:focus"
+    },
+    {
+      "command": "RISE:firstSlide",
+      "keys": ["Home"],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:lastSlide",
+      "keys": ["End"],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:toggleOverview",
+      "keys": ["W"],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:toggleAllRiseButtons",
+      "keys": [","],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:fullscreenHelp",
+      "keys": ["F"],
+      "selector": ".lm-Widget.reveal .jp-Notebook:focus"
+    },
+    {
+      "command": "RISE:riseHelp",
+      "keys": ["?"],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:chalkboard-clear",
+      "keys": ["minus"],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:chalkboard-reset",
+      "keys": ["="],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:chalkboard-toggleChalkboard",
+      "keys": ["["],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:chalkboard-toggleNotesCanvas",
+      "keys": ["]"],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:chalkboard-colorPrev",
+      "keys": ["Q"],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:chalkboard-colorNext",
+      "keys": ["S"],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:chalkboard-download",
+      "keys": ["\\"],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:notes-open",
+      "keys": ["T"],
+      "selector": ".lm-Widget.reveal"
+    },
+    {
+      "command": "RISE:smart-exec",
+      "keys": ["Shift Enter"],
+      "selector": ".lm-Widget.reveal .jp-Notebook:focus"
+    }
+  ],
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "autolaunch": {
+      "title": "Whether to autorun slideshow upon opening",
+      "description": "Autorun slideshow upon opening if set; active only on notebooks that have a 'livereveal' or 'rise' section in their metadata; this provision is here to avoid starting RISE on regular notebooks that are not intended for slideshow.",
+      "type": "boolean",
+      "default": false
+    },
+    "enable_chalkboard": {
+      "title": "Whether to activate chalkboard",
+      "description": "if set, turn on the chalkboard plugin to reveal.\nWhen enabled, this plugin adds two buttons next to the help button. It also reacts to the following additional keyboard commands:\n`[` to turn the whole space into an empty chalkboard;\n`]` to start adding free drawings to the current slide;\n\\ to download chalkboard drawing;\n`=` to reset chalkboard drawing on the current slide;\n`-` to clear the chalkboard.\nYou can define alternative short cuts. Note, that some keys might not work in some browsers.",
+      "type": "boolean",
+      "default": false
+    },
+    "start_slideshow_at": {
+      "title": "Where to start the slideshow",
+      "description": "A string that describes where to start the slideshow this can be either `beginning` (start on first slide) or `selected` (start on the slide that contains the currently selected cell)",
+      "enum": ["beginning", "selected"],
+      "default": "selected"
+    },
+    "auto_select": {
+      "title": "What to select when new content appears",
+      "description": "a string that specifies how to select cells when new contents is displayed during the slideshow (typically, new slide or new fragment). It can be either `none` (no automatic selection), or `code` (select first code cell in new content).",
+      "enum": ["none", "code"],
+      "default": "code"
+    },
+    "show_buttons_on_startup": {
+      "title": "",
+      "description": "",
+      "type": "boolean",
+      "default": false
+    },
+    "header": {
+      "title": "HTML Header",
+      "description": "the html text for a header that will show up on all slides. (effective only if `overlay` is not defined)",
+      "type": "string",
+      "default": ""
+    },
+    "footer": {
+      "title": "HTML Footer",
+      "description": "the html text for a footer that will show up on all slides. (effective only if `overlay` is not defined)",
+      "type": "string",
+      "default": ""
+    },
+    "backimage": {
+      "title": "Background image",
+      "description": "a (relative) filename for a background image that will show up on all slides. (effective only if `overlay` is not defined)",
+      "type": "boolean",
+      "default": false
+    },
+    "overlay": {
+      "title": "HTML Overlay",
+      "description": "some html text that will be inserted as-is on all pages. If this is provided, the 3 previous settings (header, footer and backimage) are ignored altogether.",
+      "type": "string",
+      "default": ""
+    },
+    "theme": {
+      "title": "Reveal Theme",
+      "description": "This setting, like the ones below, is passed directly to [`reveal.js` see this doc](https://github.com/hakimel/reveal.js).\ntheme: [see a list of reveal's available native themes](https://github.com/hakimel/reveal.js#theming). Note that dark themes from reveal do not work well with RISE, at least not without additional and manual tweaks.",
+      "enum": [
+        "black",
+        "white",
+        "league",
+        "beige",
+        "sky",
+        "night",
+        "serif",
+        "simple",
+        "solarized",
+        "blood",
+        "moon"
+      ],
+      "default": "simple"
+    },
+    "transition": {
+      "title": "Reveal Transition",
+      "description": "at least available: none - fade - slide - convex - concave - zoom - cube - linear; see also `reveal.js`.",
+      "enum": [
+        "none",
+        "fade",
+        "slide",
+        "convex",
+        "concave",
+        "zoom",
+        "cube",
+        "linear"
+      ],
+      "default": "linear"
+    },
+    "slideNumber": {
+      "title": "Reveal Slide Number",
+      "description": "A string to specify if and how to number slides; [see reveal's explanations](https://github.com/hakimel/reveal.js#slide-number).",
+      "oneOf": [{ "type": "boolean" }, { "enum": ["h.v", "h/v", "c", "c/t"] }],
+      "default": false
+    },
+    "width": {
+      "title": "Reveal Width",
+      "description": "A css width attribute, like `1920px` or `10cm` or `100%`. **Remember that you can always zoom in and out** with you browser's native keyboard shortcuts like typically `Command +` or `Command -`.",
+      "type": "string",
+      "default": "100%"
+    },
+    "height": {
+      "title": "Reveal Height",
+      "description": "ditto for slide height.",
+      "type": "string",
+      "default": "100%"
+    },
+    "controls": {
+      "title": "Reveal Controls",
+      "description": "Add buttons to exit and get help",
+      "type": "boolean",
+      "default": true
+    },
+    "progress": {
+      "title": "Reveal Progress",
+      "description": "Show progress as a line at the bottom",
+      "type": "boolean",
+      "default": true
+    },
+    "history": {
+      "title": "Reveal History",
+      "description": "Push each slide change to the browser history",
+      "type": "boolean",
+      "default": true
+    },
+    "scroll": {
+      "title": "Reveal Scroll",
+      "description": "See reveal documentation",
+      "type": "boolean",
+      "default": false
+    },
+    "center": {
+      "title": "Reveal center",
+      "description": "See reveal documentation",
+      "type": "boolean",
+      "default": true
+    },
+    "auto_select_timeout": {
+      "title": "Timeout before auto-selection",
+      "description": "timeout in milliseconds before auto-selecting; all the timeout settings are mostly intended for developers.",
+      "type": "number",
+      "default": 450
+    },
+    "restore_timeout": {
+      "title": "Timeout when restoring the focus",
+      "description": "timeout in milliseconds before restoring focus to selected cell when quitting slideshow mode; mostly intended for developers.",
+      "type": "number",
+      "default": 500
+    },
+    "async_timeout": {
+      "title": "Timeout between synchronization",
+      "description": "timeout in milliseconds before an extra call to Reveal.sync() is made to ensure proper display in some problematic conditions; like other timeout settings this is mostly targetting developers.",
+      "type": "number",
+      "default": 250
+    }
+  }
+}

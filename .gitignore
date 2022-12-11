@@ -118,3 +118,5 @@ dmypy.json
 
 # OSX files
 .DS_Store
+jupyterlab_rise/schemas
+jupyterlab_rise/static
