@@ -48,6 +48,8 @@ exclude = [".github", "binder"]
 [tool.hatch.build.targets.wheel.shared-data]
 "jupyterlab_rise/labextension" = "share/jupyter/labextensions/jupyterlab-rise"
 "install.json" = "share/jupyter/labextensions/jupyterlab-rise/install.json"
+"jupyter-config/server_config" = "etc/jupyter/jupyter_server_config.d"
+"jupyter-config/nbconfig" = "etc/jupyter/jupyter_notebook_config.d"
 
 [tool.hatch.build.hooks.version]
 path = "jupyterlab_rise/_version.py"
