@@ -1,0 +1,34 @@
+/* this is for styling the overlay
+ * when using header / footer and backimage
+ *
+ * see metadata in notebook
+ */
+
+#rise-header {
+    margin: 10px;
+    left: 10%;
+}
+
+#rise-footer {
+    margin: 10px;
+    right: 10%;
+}
+
+#rise-backimage {
+    opacity: 0.20;
+}
+
+/* TODO: maybe we need to port this to main.css?  */
+.reveal img {
+    max-width: 100%;
+}
+
+/* leave some space for the header
+   here we have not set scroll=true
+   and so there is no .rise-scroll element
+   in this case it is better to style this selector
+   rather than just 'section' because there are 2 depths of sections
+*/
+section.stack.present {
+    margin-top: 50px;
+}
