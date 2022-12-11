@@ -42,8 +42,11 @@ source = "nodejs"
 fields = ["description", "authors", "urls"]
 
 [tool.hatch.build.targets.sdist]
-artifacts = ["jupyterlab_rise/labextension"]
+artifacts = ["jupyterlab_rise/labextension", "jupyterlab_rise/schemas", "jupyterlab_rise/static"]
 exclude = [".github", "binder"]
+
+[tool.hatch.build.targets.wheel]
+artifacts = ["jupyterlab_rise/schemas", "jupyterlab_rise/static"]
 
 [tool.hatch.build.targets.wheel.shared-data]
 "jupyterlab_rise/labextension" = "share/jupyter/labextensions/jupyterlab-rise"

@@ -8,6 +8,7 @@
     "jupyterlab-extension"
   ],
   "private": true,
+  "files": [],
   "workspaces": {
     "packages": [
       "app",
