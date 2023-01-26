@@ -86,3 +86,6 @@ before-build-npm = [
     "jlpm build:prod"
 ]
 before-build-python = ["jlpm clean"]
+
+[tool.check-wheel-contents]
+ignore = ["W002"]
