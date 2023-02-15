@@ -177,8 +177,10 @@ module.exports = [
         type: 'var',
         name: ['_JUPYTERLAB', 'CORE_OUTPUT']
       },
-      filename: 'bundle.js'
+      filename: 'bundle.js',
+      sourceMapFilename: "[name].js.map"
     },
+    devtool: "source-map",
     plugins: [
       new ModuleFederationPlugin({
         library: {
