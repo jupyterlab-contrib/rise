@@ -22,6 +22,20 @@ body.rise-enabled .reveal ul {
   margin-top: 0.2em;
 }
 
+
+.reveal .slides .stack.present
+{
+    background-image: url("https://fh-joanneum.at/content/themes/fhjoanneum/assets/images/logo_fh_2_color.svg");
+    background-repeat: no-repeat;
+    background-position: top right;
+    margin-top: 0.3em;
+    padding-top: 2em;
+}
+
+.lm-Widget .p-Widget .jp-Cell {
+    padding-right: 1em;
+}
+
 .reveal .rendered_html h1:first-child,
 .reveal .rendered_html h2:first-child,
 .reveal .rendered_html h3:first-child,

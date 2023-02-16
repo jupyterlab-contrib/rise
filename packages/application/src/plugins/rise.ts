@@ -78,7 +78,6 @@ export const plugin: JupyterFrontEndPlugin<void> = {
       app.started,
       app.restored
     ]).then(async ([settings]) => {
-      let rendered: boolean | null = null;
       const notebookPath = PageConfig.getOption('notebookPath');
       const notebookPanel = documentManager.open(notebookPath) as NotebookPanel;
 
@@ -112,11 +111,9 @@ export const plugin: JupyterFrontEndPlugin<void> = {
           change.name === 'dirty' &&
           change.newValue === false &&
           // if rendered = null || true
-          !!rendered
+          !!change.oldValue
         ) {
           console.log(`Convert notebook ${notebookPath} to slideshow.`);
-          notebookPanel.content.fullyRendered.disconnect(setRendered, this);
-          notebookPanel.model?.stateChanged.disconnect(initializeReveal, this);
 
           // Set the active cell index
           notebookPanel.content.activeCellIndex = activeCellIndex;
@@ -134,21 +131,15 @@ export const plugin: JupyterFrontEndPlugin<void> = {
         }
       };
 
-      const setRendered = (notebook: Notebook, fullyRendered: boolean) => {
-        rendered = fullyRendered;
-        if (rendered) {
+      // Wait until the context is fully loaded      
+      notebookPanel.context.ready.then(() => 
           initializeReveal(null, {
             name: 'dirty',
-            newValue: notebook.model?.dirty ?? true,
+            newValue: notebookPanel.model?.dirty ?? true,
             oldValue: true
-          });
-        }
-      };
-
-      // Deal with virtual rendering
-      notebookPanel.content.fullyRendered.connect(setRendered, this);
-
-      notebookPanel.model?.stateChanged.connect(initializeReveal, this);
+          })
+      )
+      
 
       // Remove the toolbar - fail due to the dynamic load of the toolbar items
       // notebookPanel.toolbar.dispose();
