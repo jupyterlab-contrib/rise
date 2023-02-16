@@ -178,9 +178,9 @@ module.exports = [
         name: ['_JUPYTERLAB', 'CORE_OUTPUT']
       },
       filename: 'bundle.js',
-      sourceMapFilename: "[name].js.map"
+      sourceMapFilename: '[name].js.map'
     },
-    devtool: "source-map",
+    devtool: 'source-map',
     plugins: [
       new ModuleFederationPlugin({
         library: {

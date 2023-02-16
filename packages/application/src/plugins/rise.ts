@@ -131,15 +131,14 @@ export const plugin: JupyterFrontEndPlugin<void> = {
         }
       };
 
-      // Wait until the context is fully loaded      
-      notebookPanel.context.ready.then(() => 
-          initializeReveal(null, {
-            name: 'dirty',
-            newValue: notebookPanel.model?.dirty ?? true,
-            oldValue: true
-          })
-      )
-      
+      // Wait until the context is fully loaded
+      notebookPanel.context.ready.then(() =>
+        initializeReveal(null, {
+          name: 'dirty',
+          newValue: notebookPanel.model?.dirty ?? true,
+          oldValue: true
+        })
+      );
 
       // Remove the toolbar - fail due to the dynamic load of the toolbar items
       // notebookPanel.toolbar.dispose();
