@@ -18,4 +18,6 @@ dependencies:
   - pip
   - wheel
   # additional packages for demos
-  # - ipywidgets
+  - numpy
+  - ipywidgets
+  # - seaborn
