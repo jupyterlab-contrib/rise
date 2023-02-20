@@ -56,14 +56,15 @@
         "watch:lib": "lerna exec --stream --scope \"jupyterlab-rise-application\" --scope \"jupyterlab-rise\" yarn watch"
     },
     "dependencies": {
-        "@jupyterlab/application": "^3.1.0",
-        "@jupyterlab/settingregistry": "^3.1.0"
+        "@jupyterlab/application": "^3.6.1",
+        "@jupyterlab/codemirror": "^3.6.1",
+        "@jupyterlab/settingregistry": "^3.6.1"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0",
         "@babel/preset-env": "^7.0.0",
-        "@jupyterlab/builder": "^3.1.0",
-        "@jupyterlab/testutils": "^3.0.0",
+        "@jupyterlab/builder": "^3.6.1",
+        "@jupyterlab/testutils": "^3.6.1",
         "@types/jest": "^26.0.0",
         "@typescript-eslint/eslint-plugin": "^4.8.1",
         "@typescript-eslint/parser": "^4.8.1",
