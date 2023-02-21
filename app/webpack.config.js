@@ -198,9 +198,6 @@ module.exports = [
           type: 'asset/resource'
         }
       ]
-    },    
-  }
-    
-  )
+    }
+  })
 ].concat(extras);
-

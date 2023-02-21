@@ -131,7 +131,7 @@ export const plugin: JupyterFrontEndPlugin<void> = {
         }
       };
 
-      notebookPanel.model?.initialize()
+      notebookPanel.model?.initialize();
       // Wait until the context is fully loaded
       notebookPanel.context.ready.then(() => {
         setTimeout(() => {
@@ -139,10 +139,9 @@ export const plugin: JupyterFrontEndPlugin<void> = {
             name: 'dirty',
             newValue: notebookPanel.model?.dirty ?? true,
             oldValue: true
-          })
+          });
         }, 500);
-        
-    });
+      });
 
       // Remove the toolbar - fail due to the dynamic load of the toolbar items
       // notebookPanel.toolbar.dispose();
