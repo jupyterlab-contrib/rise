@@ -134,14 +134,13 @@ export const plugin: JupyterFrontEndPlugin<void> = {
 
       notebookPanel.model?.initialize();
       // Wait until the context is fully loaded
-      await notebookPanel.context.ready
-      await Mode.ensure(notebookPanel.content.codeMimetype)
-        initializeReveal(null, {
-          name: 'dirty',
-          newValue: notebookPanel.model?.dirty ?? true,
-          oldValue: true
-        })
-      
+      await notebookPanel.context.ready;
+      await Mode.ensure(notebookPanel.content.codeMimetype);
+      initializeReveal(null, {
+        name: 'dirty',
+        newValue: notebookPanel.model?.dirty ?? true,
+        oldValue: true
+      });
 
       // Remove the toolbar - fail due to the dynamic load of the toolbar items
       // notebookPanel.toolbar.dispose();
@@ -590,9 +589,8 @@ namespace Rise {
     const chunks = href.split('-');
     const slide = Number(chunks[1]);
     const subslide = Number(chunks[2]);
-    const fragments = current_slide.querySelectorAll(
-      'div.fragment.visible'
-    ).length;
+    const fragments = current_slide.querySelectorAll('div.fragment.visible')
+      .length;
     return [slide, subslide, fragments];
   }
 
@@ -1171,7 +1169,9 @@ namespace Rise {
 
   const reveal_helpstr: { [id: string]: string } = {};
 
-  function getHelpDescription(trans: TranslationBundle): {
+  function getHelpDescription(
+    trans: TranslationBundle
+  ): {
     [id: string]: string;
   } {
     if (Object.keys(reveal_helpstr).length === 0) {
@@ -1180,10 +1180,12 @@ namespace Rise {
         'jump to first slide'
       );
       reveal_helpstr[CommandIDs.riseLastSlide] = trans.__('jump to last slide');
-      reveal_helpstr[CommandIDs.riseToggleOverview] =
-        trans.__('toggle overview');
-      reveal_helpstr[CommandIDs.riseToggleAllButtons] =
-        trans.__('show/hide buttons');
+      reveal_helpstr[CommandIDs.riseToggleOverview] = trans.__(
+        'toggle overview'
+      );
+      reveal_helpstr[CommandIDs.riseToggleAllButtons] = trans.__(
+        'show/hide buttons'
+      );
       reveal_helpstr[CommandIDs.riseFullScreen] = trans.__(
         'show fullscreen help'
       );
