@@ -18,6 +18,7 @@ import { CommandRegistry } from '@lumino/commands';
 import { Signal } from '@lumino/signaling';
 import { Widget } from '@lumino/widgets';
 import type Reveal from 'reveal.js';
+import { Mode } from '@jupyterlab/codemirror';
 
 // TODO Fix shortcut in slideshow mode
 // TODO add commands to the palette
@@ -132,13 +133,14 @@ export const plugin: JupyterFrontEndPlugin<void> = {
       };
 
       // Wait until the context is fully loaded
-      notebookPanel.context.ready.then(() =>
+      await notebookPanel.context.ready
+      await Mode.ensure(notebookPanel.content.codeMimetype)
         initializeReveal(null, {
           name: 'dirty',
           newValue: notebookPanel.model?.dirty ?? true,
           oldValue: true
         })
-      );
+      
 
       // Remove the toolbar - fail due to the dynamic load of the toolbar items
       // notebookPanel.toolbar.dispose();
