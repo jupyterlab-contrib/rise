@@ -24,9 +24,7 @@ app_dir = get_app_dir()
 version = __version__
 
 
-class RiseHandler(
-    ExtensionHandlerJinjaMixin, ExtensionHandlerMixin, JupyterHandler
-):
+class RiseHandler(ExtensionHandlerJinjaMixin, ExtensionHandlerMixin, JupyterHandler):
     def get_page_config(self, notebook_path: Optional[str] = None):
         config = LabConfig()
         app = self.extensionapp
@@ -39,7 +37,7 @@ class RiseHandler(
             "token": self.settings["token"],
             "fullStaticUrl": ujoin(self.base_url, "static", self.name),
             "frontendUrl": ujoin(self.base_url, "rise/"),
-            'notebookPath': notebook_path,
+            "notebookPath": notebook_path,
         }
 
         mathjax_config = self.settings.get("mathjax_config", "TeX-AMS_HTML-full,Safe")
@@ -79,7 +77,9 @@ class RiseHandler(
     @web.authenticated
     def get(self, path: str = None):
         nb_path = Path(path)
-        if nb_path.is_dir(): # TODO is it enough to support Jupytext? or should we filter the `suffix`
+        if (
+            nb_path.is_dir()
+        ):  # TODO is it enough to support Jupytext? or should we filter the `suffix`
             raise web.HTTPError(404, f"Only files can be opened with RISE; got {path}")
 
         return self.write(
@@ -88,9 +88,10 @@ class RiseHandler(
                 static=self.static_url,
                 base_url=self.base_url,
                 token=self.settings["token"],
-                page_config=self.get_page_config(path)
+                page_config=self.get_page_config(path),
             )
         )
+
 
 class RiseApp(LabServerApp):
     name = "rise"

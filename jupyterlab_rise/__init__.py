@@ -4,10 +4,7 @@ from ._version import __version__
 
 
 def _jupyter_labextension_paths():
-    return [{
-        "src": "labextension",
-        "dest": "jupyterlab-rise"
-    }]
+    return [{"src": "labextension", "dest": "jupyterlab-rise"}]
 
 
 def _jupyter_server_extension_points():
