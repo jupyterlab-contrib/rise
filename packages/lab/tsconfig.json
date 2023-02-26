@@ -3,8 +3,7 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src",
-    "sourceMap": true,
-    "lib": ["dom", "es2018"]
+    "sourceMap": true
   },
   "include": ["src/*"]
 }

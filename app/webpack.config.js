@@ -190,14 +190,6 @@ module.exports = [
         name: 'CORE_FEDERATION',
         shared: createShared(data)
       })
-    ],
-    module: {
-      rules: [
-        {
-          test: /\.png/,
-          type: 'asset/resource'
-        }
-      ]
-    }
+    ]
   })
 ].concat(extras);
