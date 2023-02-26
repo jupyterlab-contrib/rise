@@ -82,6 +82,10 @@ build_dir = "jupyterlab_rise/labextension"
 version-cmd = "python scripts/bump_version.py --force"
 
 [tool.jupyter-releaser.hooks]
+before-bump-version = [
+    "python -m pip install jupyterlab~=3.1",
+    "jlpm"
+]
 before-build-npm = [
     "python -m pip install jupyterlab~=3.1",
     "jlpm",
