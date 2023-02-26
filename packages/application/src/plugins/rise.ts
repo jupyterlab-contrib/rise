@@ -5,6 +5,7 @@ import {
 } from '@jupyterlab/application';
 import { Dialog, ICommandPalette, showDialog } from '@jupyterlab/apputils';
 import { ICellModel } from '@jupyterlab/cells';
+import { Mode } from '@jupyterlab/codemirror';
 import { IChangedArgs, PageConfig, PathExt } from '@jupyterlab/coreutils';
 import { IDocumentManager } from '@jupyterlab/docmanager';
 import { INotebookModel, Notebook, NotebookPanel } from '@jupyterlab/notebook';
@@ -132,13 +133,14 @@ export const plugin: JupyterFrontEndPlugin<void> = {
       };
 
       // Wait until the context is fully loaded
-      notebookPanel.context.ready.then(() =>
+      notebookPanel.context.ready.then(async () => {
+        await Mode.ensure(notebookPanel.content.codeMimetype);
         initializeReveal(null, {
           name: 'dirty',
           newValue: notebookPanel.model?.dirty ?? true,
           oldValue: true
-        })
-      );
+        });
+      });
 
       // Remove the toolbar - fail due to the dynamic load of the toolbar items
       // notebookPanel.toolbar.dispose();

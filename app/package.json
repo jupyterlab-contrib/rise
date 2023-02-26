@@ -107,6 +107,7 @@
     "singletonPackages": [
       "@jupyterlab/application",
       "@jupyterlab/apputils",
+      "@jupyterlab/codemirror",
       "@jupyterlab/codeeditor",
       "@jupyterlab/coreutils",
       "@jupyterlab/docmanager",
