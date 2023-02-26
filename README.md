@@ -1,6 +1,6 @@
 # jupyterlab_rise
 
-[![Extension status](https://img.shields.io/badge/status-draft-critical 'Not yet working')](https://jupyterlab-contrib.github.io/index.html)[![Github Actions Status](https://github.com/jupyterlab-contrib/rise/workflows/Build/badge.svg)](https://github.com/jupyterlab-contrib/rise/actions/workflows/build.yml)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jupyterlab-contrib/rise/main?urlpath=lab/tree/examples/README.ipynb)
+[![Extension status](https://img.shields.io/badge/status-draft-critical 'Not yet working')](https://jupyterlab-contrib.github.io/index.html) [![Github Actions Status](https://github.com/jupyterlab-contrib/rise/workflows/Build/badge.svg)](https://github.com/jupyterlab-contrib/rise/actions/workflows/build.yml) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jupyterlab-contrib/rise/main?urlpath=lab/tree/examples/README.ipynb) [![PyPI](https://img.shields.io/pypi/v/jupyterlab-rise)](https://pypi.org/project/jupyterlab-rise/)
 
 RISE: "Live" Reveal.js JupyterLab Slideshow extension.
 
@@ -41,6 +41,7 @@ The `jlpm` command is JupyterLab's pinned version of
 pip install -e .
 # Link your development version of the extension with JupyterLab
 jupyter labextension develop . --overwrite
+jupyter server extension enable jupyterlab_rise
 # Rebuild extension Typescript source after making changes
 jlpm build
 ```

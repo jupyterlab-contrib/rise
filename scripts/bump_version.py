@@ -13,7 +13,24 @@ from packaging.version import parse
 LERNA_CMD = "jlpm run lerna version --no-push --force-publish --no-git-tag-version"
 
 
+def install_dependencies() -> None:
+    pkgs = []
+    try:
+        import hatch
+    except ImportError:
+        pkgs.append("hatch")
+    try:
+        import jupyterlab
+    except ImportError:
+        pkgs.append("jupyterlab~=3.1")
+    
+    if pkgs:
+        run([sys.executable, "-m", "pip", "install"] + pkgs)
+
+
 def bump(force: bool, spec: str) -> None:
+    install_dependencies()
+
     HERE = Path(__file__).parent.parent.resolve()
     output = check_output(
         shlex.split("git status --porcelain"), cwd=HERE, encoding="utf-8"
