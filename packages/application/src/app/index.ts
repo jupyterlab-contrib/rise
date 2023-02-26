@@ -61,7 +61,8 @@ export class RiseShell extends Widget implements JupyterFrontEnd.IShell {
     options?: DocumentRegistry.IOpenOptions
   ): void {
     if ((this.layout as BoxLayout).widgets.length > 0 || area !== 'rise') {
-      // pass no-op
+      // Bail
+      return;
     }
     BoxLayout.setStretch(widget, 1);
     (this.layout as BoxLayout).addWidget(widget);
