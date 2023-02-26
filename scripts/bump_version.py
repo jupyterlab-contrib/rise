@@ -38,28 +38,16 @@ def bump(force: bool, spec: str) -> None:
     if len(output) > 0:
         raise Exception("Must be in a clean git state with no untracked files")
 
-    curr = parse(
+    run(
+        [sys.executable, "-m", "hatch", "version", spec], cwd=HERE, encoding="utf-8", check=True
+    )
+
+    version = parse(
         # Output maybe multi-lines if build dependencies needs to be installed.
         check_output(
             [sys.executable, "-m", "hatch", "version"], cwd=HERE, encoding="utf-8"
         ).strip("\n").split("\n")[-1]
     )
-    if spec == "next":
-        spec = f"{curr.major}.{curr.minor}."
-        if curr.pre:
-            p, x = curr.pre
-            spec += f"{curr.micro}{p}{x + 1}"
-        else:
-            spec += f"{curr.micro + 1}"
-
-    elif spec == "patch":
-        spec = f"{curr.major}.{curr.minor}."
-        if curr.pre:
-            spec += f"{curr.micro}"
-        else:
-            spec += f"{curr.micro + 1}"
-
-    version = parse(spec)
 
     # convert the Python version
     js_version = f"{version.major}.{version.minor}.{version.micro}"
@@ -72,7 +60,7 @@ def bump(force: bool, spec: str) -> None:
     lerna_cmd = f"{LERNA_CMD} {js_version}"
     if force:
         lerna_cmd += " --yes"
-    run(shlex.split(lerna_cmd), cwd=HERE)
+    run(shlex.split(lerna_cmd), cwd=HERE, check=True)
 
     path = HERE.joinpath("package.json")
     if path.exists():
