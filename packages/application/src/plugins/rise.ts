@@ -146,7 +146,7 @@ export const plugin: JupyterFrontEndPlugin<void> = {
       // notebookPanel.toolbar.dispose();
       notebookPanel.toolbar.hide();
 
-      app.shell.add(notebookPanel);
+      app.shell.add(notebookPanel, 'rise');
     });
   }
 };
