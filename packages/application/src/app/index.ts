@@ -15,7 +15,7 @@ import { BoxLayout, Widget } from '@lumino/widgets';
 /**
  * The Rise application shell token.
  */
-export const IRetroShell = new Token<RiseShell>(
+export const IRiseShell = new Token<RiseShell>(
   'jupyterlab-rise-application:IRiseShell'
 );
 
@@ -60,8 +60,9 @@ export class RiseShell extends Widget implements JupyterFrontEnd.IShell {
     area?: string,
     options?: DocumentRegistry.IOpenOptions
   ): void {
-    if ((this.layout as BoxLayout).widgets.length > 0) {
-      // pass no-op
+    if ((this.layout as BoxLayout).widgets.length > 0 || area !== 'rise') {
+      // Bail
+      return;
     }
     BoxLayout.setStretch(widget, 1);
     (this.layout as BoxLayout).addWidget(widget);
