@@ -17,14 +17,15 @@ def bump(force: bool, spec: str) -> None:
     HERE = Path(__file__).parent.parent.resolve()
     output = check_output(
         shlex.split("git status --porcelain"), cwd=HERE, encoding="utf-8"
-    ).strip(" \n")
+    )
     if len(output) > 0:
         raise Exception("Must be in a clean git state with no untracked files")
 
     curr = parse(
+        # Output maybe multi-lines if build dependencies needs to be installed.
         check_output(
             [sys.executable, "-m", "hatch", "version"], cwd=HERE, encoding="utf-8"
-        ).strip(" \n")
+        ).strip("\n").split("\n")[-1]
     )
     if spec == "next":
         spec = f"{curr.major}.{curr.minor}."
