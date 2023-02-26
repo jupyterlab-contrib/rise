@@ -22,7 +22,7 @@
 # # using jupytext
 
 # %% [markdown]
-# if you have jupytext enabled, you can use RISE in a usual manner  
+# if you have jupytext enabled, you can use RISE in a usual manner
 # on notebooks that are stored as `.py` or `.md` (or other extensions, for that matter).
 
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
@@ -35,35 +35,36 @@
 # the only notable difference is for locating the notebook-specific CSS file
 
 # %% [markdown]
-# of course, and as you might expect, if your notebook   
-# is called either `mynotebook.py` or `mynotebook.md`,  
-# or, here again, any other extension  
-# then it is `mynotebook.css` that is used,  
+# of course, and as you might expect, if your notebook
+# is called either `mynotebook.py` or `mynotebook.md`,
+# or, here again, any other extension
+# then it is `mynotebook.css` that is used,
 # if it exists, to load a notebook-specific CSS
 
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## pros and cons
 
 # %% [markdown]
-# jupytext is supercool if you use git a lot, and you don't carre about saving cell outputs  
+# jupytext is supercool if you use git a lot, and you don't carre about saving cell outputs
 # no need anymore to run `nbstripout` all the f... time
+
 
 # %% {"cell_style": "split"}
 # you can still embed code of course
 def syracuse(n):
-    while n != 1: 
+    while n != 1:
         if n % 2 == 0:
             n //= 2
             yield n
         else:
-            n = 3*n + 1
+            n = 3 * n + 1
             yield n
 
 
 # %% {"cell_style": "split"}
 # but the output is no longer stored
 for n in (4, 8, 27):
-    print(f'n=${n} :', end=' ')
+    print(f"n=${n} :", end=" ")
     for i in syracuse(n):
-        print(i, end=' ')
+        print(i, end=" ")
     print()

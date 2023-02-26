@@ -15,11 +15,17 @@ LERNA_CMD = "jlpm run lerna version --no-push --force-publish --no-git-tag-versi
 
 def bump(force: bool, spec: str) -> None:
     HERE = Path(__file__).parent.parent.resolve()
-    output = check_output(shlex.split("git status --porcelain"), cwd=HERE, encoding="utf-8")
+    output = check_output(
+        shlex.split("git status --porcelain"), cwd=HERE, encoding="utf-8"
+    )
     if len(output) > 0:
         raise Exception("Must be in a clean git state with no untracked files")
 
-    curr = parse(check_output([sys.executable, "-m", "hatch", "version"], cwd=HERE, encoding="utf-8"))
+    curr = parse(
+        check_output(
+            [sys.executable, "-m", "hatch", "version"], cwd=HERE, encoding="utf-8"
+        )
+    )
     if spec == "next":
         spec = f"{curr.major}.{curr.minor}."
         if curr.pre:
