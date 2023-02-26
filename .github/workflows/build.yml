@@ -79,6 +79,8 @@ jobs:
 
         pip install "jupyterlab~=3.1" jupyterlab_rise*.whl
 
+        jupyter server extension list
+        jupyter server extension list 2>&1 | grep -ie "jupyterlab_rise.*OK"
 
         jupyter labextension list
         jupyter labextension list 2>&1 | grep -ie "jupyterlab-rise.*OK"
