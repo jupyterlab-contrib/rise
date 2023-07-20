@@ -65,9 +65,6 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
     });
 
     this._ready = new PromiseDelegate<void>();
-    // `setActiveCellIndex` needs to be called at least once.
-    // after instantiation.
-    this._ready.reject('Not loading at instantiation.');
 
     const { getRiseUrl, context, renderOnSave, translator } = options;
     this.getRiseUrl = getRiseUrl;
@@ -134,6 +131,10 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
     return this._ready.promise;
   }
 
+  get iframe(): HTMLIFrameElement | null {
+    return this.content.node.querySelector('iframe');
+  }
+
   /**
    * Dispose the preview widget.
    */
@@ -164,20 +165,14 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
 
   setActiveCellIndex(index: number, reload = true): void {
     const iframe = this.content.node.querySelector('iframe')!;
+
     if (reload) {
       this._ready = new PromiseDelegate<void>();
-      const setReady = () => {
-        iframe.contentWindow!.removeEventListener('load', setReady);
-        const waitForReveal = setInterval(() => {
-          if (iframe.contentDocument!.querySelector('.reveal')) {
-            clearInterval(waitForReveal);
-            this._ready.resolve();
-          }
-        }, 500);
-      };
 
       this.content.url = this.getRiseUrl(this.path, index);
-      iframe.contentWindow!.addEventListener('load', setReady);
+      this._waitForIFrame(iframe).then(ready => {
+        this._ready.resolve();
+      });
     } else {
       if (iframe.contentWindow) {
         iframe.contentWindow.history.pushState(
@@ -197,6 +192,29 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
       this._path = v;
       this.setActiveCellIndex(0);
     }
+  }
+
+  private async _waitForIFrame(iframe: HTMLIFrameElement): Promise<boolean> {
+    const ready = new PromiseDelegate<boolean>();
+
+    const setReady = () => {
+      iframe.contentWindow!.removeEventListener('load', setReady);
+
+      const waitForReveal = setInterval(() => {
+        if (iframe.contentDocument!.querySelector('.reveal')) {
+          clearInterval(waitForReveal);
+          ready.resolve(true);
+        }
+      }, 500);
+    };
+
+    if (iframe.contentDocument?.readyState === 'complete') {
+      setReady();
+    } else {
+      iframe.contentWindow!.addEventListener('load', setReady);
+    }
+
+    return ready.promise;
   }
 
   protected getRiseUrl: (path: string, index?: number) => string;
