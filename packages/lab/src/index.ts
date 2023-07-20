@@ -159,6 +159,10 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
       void tracker.add(widget);
     });
 
+    tracker.widgetAdded.connect((sender, widget) => {
+      widget.ready.then(() => widget.iframe?.focus());
+    });
+
     commands.addCommand(CommandIDs.openRise, {
       label: args => (args.toolbar ? '' : trans.__('Open as Reveal Slideshow')),
       caption: trans.__(
@@ -266,7 +270,6 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
                 await document.exitFullscreen();
               }
             }
-
             iframe.focus();
           }
         }

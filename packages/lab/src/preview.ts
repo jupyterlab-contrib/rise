@@ -110,7 +110,10 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
     if (context) {
       this.toolbar.addItem('renderOnSave', renderOnSaveCheckbox);
       void context.ready.then(() => {
-        this.setActiveCellIndex(0);
+        this.setActiveCellIndex(0)
+          .then(() => this._ready.resolve())
+          .catch(e => this._ready.reject(e));
+
         context.fileChanged.connect(() => {
           if (this.renderOnSave) {
             this.reload();
@@ -163,16 +166,15 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
     return this._renderOnSave;
   }
 
-  setActiveCellIndex(index: number, reload = true): void {
-    const iframe = this.content.node.querySelector('iframe')!;
+  setActiveCellIndex(index: number, reload = true): Promise<void> {
+    const ready = new PromiseDelegate<void>();
+    const iframe = this.iframe!;
 
     if (reload) {
-      this._ready = new PromiseDelegate<void>();
-
       this.content.url = this.getRiseUrl(this.path, index);
-      this._waitForIFrame(iframe).then(ready => {
-        this._ready.resolve();
-      });
+      this._waitForIFrame(iframe)
+        .then(r => ready.resolve())
+        .catch(e => ready.reject(e));
     } else {
       if (iframe.contentWindow) {
         iframe.contentWindow.history.pushState(
@@ -180,8 +182,12 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
           '',
           this.getRiseUrl(this.path, index)
         );
+        ready.resolve();
       }
+      ready.reject('No content.');
     }
+
+    return ready.promise;
   }
 
   protected get path(): string {
