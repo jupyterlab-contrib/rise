@@ -113,6 +113,7 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
     if (context) {
       this.toolbar.addItem('renderOnSave', renderOnSaveCheckbox);
       void context.ready.then(() => {
+        this.setActiveCellIndex(0);
         context.fileChanged.connect(() => {
           if (this.renderOnSave) {
             this.reload();
