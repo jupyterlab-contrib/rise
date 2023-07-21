@@ -280,6 +280,24 @@ namespace Rise {
   /* Register commands */
   function smartExec(panel: NotebookPanel) {
     NotebookActions.runAndAdvance(panel.content, panel.context.sessionContext);
+    // TODO
+    // is it really the selected cell that matters ?
+    // let smart_exec = Jupyter.notebook.get_selected_cell().smart_exec;
+    // if (smart_exec == 'smart_exec_slide') {
+    //   Jupyter.notebook.execute_selected_cells();
+    // } else if (smart_exec == "smart_exec_fragment") {
+    //   // let's see if the next fragment is visible or not
+    //   let cell = Jupyter.notebook.get_selected_cell();
+    //   let fragment_div = cell.smart_exec_next_fragment;
+    //   let visible = $(fragment_div).hasClass('visible');
+    //   if (visible) {
+    //     Jupyter.notebook.execute_cell_and_select_below();
+    //   } else {
+    //     Jupyter.notebook.execute_selected_cells();
+    //   }
+    // } else {
+    //   Jupyter.notebook.execute_cell_and_select_below();
+    // }
   }
 
   export function registerCommands(
