@@ -257,7 +257,7 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
               !document.fullscreenElement &&
               !iframe.contentDocument?.fullscreenElement
             ) {
-              const goFullScreen = async () => {
+              const goFullScreen = () => {
                 iframe?.contentWindow?.document
                   .querySelector('div.reveal')
                   ?.requestFullscreen();
