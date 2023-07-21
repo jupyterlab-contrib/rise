@@ -179,7 +179,7 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
           '',
           this.getRiseUrl(this.path, index)
         );
-        ready.resolve();
+        return Promise.resolve();
       }
       ready.reject('No content.');
     }
