@@ -167,7 +167,6 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
   }
 
   setActiveCellIndex(index: number, reload = true): Promise<void> {
-    const ready = new PromiseDelegate<void>();
     const iframe = this.iframe!;
 
     if (reload) {
