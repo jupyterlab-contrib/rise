@@ -181,7 +181,7 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
         );
         return Promise.resolve();
       }
-      ready.reject('No content.');
+      return Promise.reject('No content.');
     }
   }
 
