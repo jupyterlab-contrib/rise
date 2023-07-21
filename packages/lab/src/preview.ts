@@ -171,9 +171,7 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
 
     if (reload) {
       this.content.url = this.getRiseUrl(this.path, index);
-      this._waitForIFrame(iframe)
-        .then(r => ready.resolve())
-        .catch(e => ready.reject(e));
+      await this._waitForIFrame(iframe);
     } else {
       if (iframe.contentWindow) {
         iframe.contentWindow.history.pushState(
