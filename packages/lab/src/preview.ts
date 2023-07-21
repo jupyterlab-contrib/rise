@@ -333,24 +333,24 @@ namespace Private {
   }
 
   export function setupLog(): void {
-    window.onmessage = (event: any) => {
+    window.onmessage = (event: MessageEvent<any>) => {
       //console.log("EVENT: ", event);
 
       switch (event.data?.level) {
         case 'debug':
-          console.debug(...event.data?.msg);
+          console.debug(...(event.data?.msg ?? []));
           break;
 
         case 'info':
-          console.info(...event.data?.msg);
+          console.info(...(event.data?.msg ?? []));
           break;
 
         case 'warn':
-          console.warn(...event.data?.msg);
+          console.warn(...(event.data?.msg ?? []));
           break;
 
         case 'error':
-          console.error(...event.data?.msg);
+          console.error(...(event.data?.msg ?? []));
           break;
 
         default:
