@@ -1221,6 +1221,7 @@ namespace Rise {
   }
 }
 
+// @ts-expect-error 'Private' may never be read
 namespace Private {
   export function setupLog(): void {
     const _debug = console.debug;
