@@ -8,7 +8,12 @@ import { ICellModel } from '@jupyterlab/cells';
 import { Mode } from '@jupyterlab/codemirror';
 import { IChangedArgs, PageConfig, PathExt } from '@jupyterlab/coreutils';
 import { IDocumentManager } from '@jupyterlab/docmanager';
-import { INotebookModel, Notebook, NotebookPanel } from '@jupyterlab/notebook';
+import {
+  INotebookModel,
+  Notebook,
+  NotebookActions,
+  NotebookPanel
+} from '@jupyterlab/notebook';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import {
   TranslationBundle,
@@ -82,7 +87,7 @@ export const plugin: JupyterFrontEndPlugin<void> = {
       const notebookPath = PageConfig.getOption('notebookPath');
       const notebookPanel = documentManager.open(notebookPath) as NotebookPanel;
 
-      Rise.registerCommands(app.commands, trans);
+      Rise.registerCommands(app.commands, notebookPanel, trans);
       if (palette) {
         [
           CommandIDs.riseFullScreen,
@@ -273,29 +278,13 @@ namespace Rise {
   }
 
   /* Register commands */
-  function smartExec() {
-    // TODO
-    // is it really the selected cell that matters ?
-    // let smart_exec = Jupyter.notebook.get_selected_cell().smart_exec;
-    // if (smart_exec == 'smart_exec_slide') {
-    //   Jupyter.notebook.execute_selected_cells();
-    // } else if (smart_exec == "smart_exec_fragment") {
-    //   // let's see if the next fragment is visible or not
-    //   let cell = Jupyter.notebook.get_selected_cell();
-    //   let fragment_div = cell.smart_exec_next_fragment;
-    //   let visible = $(fragment_div).hasClass('visible');
-    //   if (visible) {
-    //     Jupyter.notebook.execute_cell_and_select_below();
-    //   } else {
-    //     Jupyter.notebook.execute_selected_cells();
-    //   }
-    // } else {
-    //   Jupyter.notebook.execute_cell_and_select_below();
-    // }
+  function smartExec(panel: NotebookPanel) {
+    NotebookActions.runAndAdvance(panel.content, panel.context.sessionContext);
   }
 
   export function registerCommands(
     commands: CommandRegistry,
+    panel: NotebookPanel,
     trans: TranslationBundle
   ): void {
     // register main action
@@ -303,7 +292,7 @@ namespace Rise {
       caption: trans.__(
         'execute cell, and move to the next if on the same slide'
       ),
-      execute: smartExec
+      execute: () => smartExec(panel)
     });
 
     // mostly for debug / information
@@ -1039,6 +1028,16 @@ namespace Rise {
       /* safer, and nicer too, to wait for reveal extensions to start */
       setTimeout(toggleAllRiseButtons, 2000);
     }
+
+    panel.content.activeCellChanged.connect((sender, cell) => {
+      // Move to active cell
+      const slides = Reveal.getSlides();
+      const slide = slides.find(s => s.contains(cell.node));
+      if (slide) {
+        const i = Reveal.getIndices(slide as HTMLElement);
+        Reveal.slide(i.h, i.v, i.f);
+      }
+    });
   }
 
   function Unselecter(notebook: Notebook) {
