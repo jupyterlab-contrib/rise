@@ -4,10 +4,7 @@
 /* Rise App */
 #main {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: var(--jp-layout-color0);
 }
 
@@ -311,7 +308,9 @@
   font-size: 11px;
   background-color: #f7f7f7;
   color: #333;
-  box-shadow: 0 1px 0 rgb(0 0 0 / 20%), 0 0 0 2px #fff inset;
+  box-shadow:
+    0 1px 0 rgb(0 0 0 / 20%),
+    0 0 0 2px #fff inset;
   border-radius: 3px;
   display: inline-block;
   margin: 0 0.1em;

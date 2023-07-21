@@ -1087,11 +1087,11 @@ namespace Rise {
   <ul>
     ${helpListItem(CommandIDs.riseHelp)}
     <li><kbd>${CommandRegistry.formatKeystroke('Alt R')}</kbd>: ${trans.__(
-        'enter/exit RISE'
-      )}</li>
+      'enter/exit RISE'
+    )}</li>
     <li><kbd>${CommandRegistry.formatKeystroke('Space')}</kbd>: ${trans.__(
-        'next'
-      )}</li>
+      'next'
+    )}</li>
     <li><kbd>${CommandRegistry.formatKeystroke(
       'Shift Space'
     )}</kbd>: ${trans.__('previous')}</li>
@@ -1103,11 +1103,11 @@ namespace Rise {
     ${helpListItem(CommandIDs.riseToggleOverview)}
     ${helpListItem(CommandIDs.riseNotesOpen)}
     <li><kbd>${CommandRegistry.formatKeystroke(',')}</kbd>: ${
-        helpStrings[CommandIDs.riseToggleAllButtons]
-      }</li>
+      helpStrings[CommandIDs.riseToggleAllButtons]
+    }</li>
     <li><kbd>${CommandRegistry.formatKeystroke('/')}</kbd>: ${trans.__(
-        'black screen'
-      )}</li>
+      'black screen'
+    )}</li>
     <li><strong>${trans.__('less useful')}:</strong></li>
     <ul>
       <li><kbd>${CommandRegistry.formatKeystroke('PageUp')}</kbd>: ${trans.__(
