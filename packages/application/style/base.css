@@ -74,6 +74,7 @@
 }
 
 .rise-enabled .reveal .slides {
+  width: 100% !important;
   transition-property: all;
   transition-duration: 0.2s;
   transition-timing-function: ease;

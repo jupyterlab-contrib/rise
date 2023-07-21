@@ -63,6 +63,8 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
         ]
       })
     });
+    // Uncomment in dev mode to receive logs from the iframe
+    //Private.setupLog();
 
     this._ready = new PromiseDelegate<void>();
     // `setActiveCellIndex` needs to be called at least once.
@@ -328,5 +330,33 @@ namespace Private {
     }
 
     protected input: HTMLInputElement;
+  }
+
+  export function setupLog(): void {
+    window.onmessage = (event: any) => {
+      //console.log("EVENT: ", event);
+
+      switch (event.data?.level) {
+        case 'debug':
+          console.debug(...event.data?.msg);
+          break;
+
+        case 'info':
+          console.info(...event.data?.msg);
+          break;
+
+        case 'warn':
+          console.warn(...event.data?.msg);
+          break;
+
+        case 'error':
+          console.error(...event.data?.msg);
+          break;
+
+        default:
+          console.log(event);
+          break;
+      }
+    };
   }
 }

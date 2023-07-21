@@ -59,6 +59,9 @@ export const plugin: JupyterFrontEndPlugin<void> = {
     translator: ITranslator | null,
     palette: ICommandPalette | null
   ) => {
+    // Uncomment in dev mode to send logs to the parent window
+    //Private.setupLog();
+
     const trans = (translator ?? nullTranslator).load('rise');
 
     // Get the active cell index from query argument
@@ -1215,5 +1218,51 @@ namespace Rise {
       );
     }
     return reveal_helpstr;
+  }
+}
+
+namespace Private {
+  export function setupLog(): void {
+    const _debug = console.debug;
+    const _info = console.info;
+    const _warn = console.warn;
+    const _error = console.error;
+
+    function post(payload: any) {
+      try {
+        window.top?.postMessage(payload, '/');
+      } catch (err) {
+        window.top?.postMessage(
+          {
+            level: 'debug',
+            msg: [
+              '[RISE]:',
+              'Issue cloning object when posting log message, JSON stringify version is:',
+              JSON.stringify(payload)
+            ]
+          },
+          '/'
+        );
+      }
+    }
+    console.debug = (...args) => {
+      post({ level: 'debug', msg: ['[RISE]:', ...args] });
+      _debug(...args);
+    };
+
+    console.info = console.info = (...args) => {
+      post({ level: 'info', msg: ['[RISE]:', ...args] });
+      _info(...args);
+    };
+
+    console.warn = (...args) => {
+      post({ level: 'warn', msg: ['[RISE]:', ...args] });
+      _warn(...args);
+    };
+
+    console.error = (...args) => {
+      post({ level: 'error', msg: ['[RISE]:', ...args] });
+      _error(...args);
+    };
   }
 }
