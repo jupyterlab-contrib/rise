@@ -159,6 +159,10 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
       void tracker.add(widget);
     });
 
+    tracker.widgetAdded.connect((sender, widget) => {
+      widget.ready.then(() => widget.iframe?.focus());
+    });
+
     commands.addCommand(CommandIDs.openRise, {
       label: args => (args.toolbar ? '' : trans.__('Open as Reveal Slideshow')),
       caption: trans.__(
@@ -248,30 +252,25 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
               widget => widget.id === args['id']
             )
           : app.shell.currentWidget;
+
         if (current && tracker.has(current)) {
-          const iframe = (current as RisePreview).content.node.querySelector(
-            'iframe'
-          );
+          const iframe = (current as RisePreview).iframe;
           if (iframe) {
             if (
               !document.fullscreenElement &&
               !iframe.contentDocument?.fullscreenElement
             ) {
-              const goFullScreen = () => {
+              (current as RisePreview).ready.then(() => {
                 iframe?.contentWindow?.document
                   .querySelector('div.reveal')
                   ?.requestFullscreen();
-              };
-              if (iframe.contentDocument?.readyState === 'complete') {
-                goFullScreen();
-              } else {
-                iframe.contentWindow?.addEventListener('load', goFullScreen);
-              }
+              });
             } else {
               if (document.exitFullscreen) {
                 await document.exitFullscreen();
               }
             }
+            iframe.focus();
           }
         }
       },
