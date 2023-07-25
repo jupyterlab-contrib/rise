@@ -5,7 +5,7 @@ import {
 } from '@jupyterlab/application';
 import { Dialog, ICommandPalette, showDialog } from '@jupyterlab/apputils';
 import { ICellModel } from '@jupyterlab/cells';
-import { Mode } from '@jupyterlab/codemirror';
+import { IEditorLanguageRegistry } from '@jupyterlab/codemirror';
 import { IChangedArgs, PageConfig, PathExt } from '@jupyterlab/coreutils';
 import { IDocumentManager } from '@jupyterlab/docmanager';
 import {
@@ -55,11 +55,12 @@ namespace CommandIDs {
 export const plugin: JupyterFrontEndPlugin<void> = {
   id: 'rise-extension:opener',
   autoStart: true,
-  requires: [IDocumentManager],
+  requires: [IDocumentManager, IEditorLanguageRegistry],
   optional: [ISettingRegistry, ITranslator, ICommandPalette],
   activate: (
     app: JupyterFrontEnd,
     documentManager: IDocumentManager,
+    laguages: IEditorLanguageRegistry,
     settingRegistry: ISettingRegistry | null,
     translator: ITranslator | null,
     palette: ICommandPalette | null
@@ -89,6 +90,12 @@ export const plugin: JupyterFrontEndPlugin<void> = {
     ]).then(async ([settings]) => {
       const notebookPath = PageConfig.getOption('notebookPath');
       const notebookPanel = documentManager.open(notebookPath) as NotebookPanel;
+      // With the new windowing, some cells are not visible and we need
+      // to deactivate the windowing and wait for each cell to be ready.
+      notebookPanel.content.notebookConfig = {
+        ...notebookPanel.content.notebookConfig,
+        windowingMode: 'none'
+      };
 
       Rise.registerCommands(app.commands, notebookPanel, trans);
       if (palette) {
@@ -142,7 +149,11 @@ export const plugin: JupyterFrontEndPlugin<void> = {
 
       // Wait until the context is fully loaded
       notebookPanel.context.ready.then(async () => {
-        await Mode.ensure(notebookPanel.content.codeMimetype);
+        await Promise.all(
+          notebookPanel.content.widgets.map(cell => cell.ready)
+        );
+
+        await laguages.getLanguage(notebookPanel.content.codeMimetype);
         initializeReveal(null, {
           name: 'dirty',
           newValue: notebookPanel.model?.dirty ?? true,
@@ -275,8 +286,8 @@ namespace Rise {
     complete_config = {
       ...HARDWIRED_CONFIG,
       ...applicationSettings,
-      ...((notebookModel?.metadata.get('livereveal') as any) ?? {}),
-      ...((notebookModel?.metadata.get('rise') as any) ?? {})
+      ...((notebookModel?.getMetadata('livereveal') as any) ?? {}),
+      ...((notebookModel?.getMetadata('rise') as any) ?? {})
     };
   }
 
@@ -386,7 +397,7 @@ namespace Rise {
   let Reveal: Reveal.Api;
 
   function get_slide_type(cell: ICellModel): string {
-    const slideshow = cell.metadata.get('slideshow') || {};
+    const slideshow = cell.getMetadata('slideshow') || {};
     const slide_type = (slideshow as any)['slide_type'];
     //console.log(slide_type);
     return slide_type === undefined || slide_type === '-' ? '' : slide_type;
@@ -481,7 +492,7 @@ namespace Rise {
       const cell = cells.get(i);
       const slide_type = get_slide_type(cell);
       // we already have one section inserted here on startup
-      const cell_node = notebook.node.children[slide_counter + 1];
+      const cell_node = notebook.viewportNode.firstElementChild!;
 
       if (content_on_slide1) {
         if (slide_type === 'slide') {
@@ -1052,6 +1063,9 @@ namespace Rise {
 
     panel.content.activeCellChanged.connect((sender, cell) => {
       // Move to active cell
+      if (!cell) {
+        return;
+      }
       const slides = Reveal.getSlides();
       const slide = slides.find(s => s.contains(cell.node));
       if (slide) {

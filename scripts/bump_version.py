@@ -22,7 +22,7 @@ def install_dependencies() -> None:
     try:
         import jupyterlab
     except ImportError:
-        pkgs.append("jupyterlab~=3.1")
+        pkgs.append("jupyterlab~=4.0")
     
     if pkgs:
         run([sys.executable, "-m", "pip", "install"] + pkgs)

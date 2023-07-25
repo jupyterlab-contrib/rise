@@ -104,14 +104,21 @@ async function main() {
     require('@jupyterlab/codemirror-extension').default.filter(({ id }) =>
       [
         '@jupyterlab/codemirror-extension:services',
-        '@jupyterlab/codemirror-extension:codemirror'
+        '@jupyterlab/codemirror-extension:codemirror',
+        '@jupyterlab/codemirror-extension:languages',
+        '@jupyterlab/codemirror-extension:extensions',
+        '@jupyterlab/codemirror-extension:themes'
       ].includes(id)
     ),
     require('@jupyterlab/docmanager-extension').default.filter(({ id }) =>
-      ['@jupyterlab/docmanager-extension:plugin'].includes(id)
+      [
+        '@jupyterlab/docmanager-extension:plugin',
+        '@jupyterlab/docmanager-extension:manager',
+        '@jupyterlab/docmanager-extension:opener'
+      ].includes(id)
     ),
-    require('@jupyterlab/docprovider-extension'),
-    require('@jupyterlab/mathjax2-extension'),
+    require('@jupyterlab/mathjax-extension'),
+    require('@jupyterlab/markedparser-extension'),
     require('@jupyterlab/notebook-extension').default.filter(({ id }) =>
       [
         '@jupyterlab/notebook-extension:factory',

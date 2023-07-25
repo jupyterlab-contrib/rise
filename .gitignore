@@ -1,4 +1,5 @@
 *.bundle.*
+.yarn
 lib/
 node_modules/
 .eslintcache
