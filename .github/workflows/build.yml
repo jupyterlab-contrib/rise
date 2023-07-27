@@ -18,23 +18,21 @@ jobs:
       uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
 
     - name: Install dependencies
-      run: python -m pip install -U jupyterlab~=4.0
+      run: python -m pip install -U "jupyterlab>=4.0.0,<5"
 
     - name: Lint the extension
       run: |
         set -eux
         jlpm
         jlpm run lint:check
-    
-    # - name: Test the extension
-    #   run: |
-    #     set -eux
-    #     jlpm run test
 
     - name: Build the extension
       run: |
         set -eux
         python -m pip install .[test]
+
+        jupyter server extension list
+        jupyter server extension list 2>&1 | grep -ie "jupyterlab_rise.*OK"
 
         jupyter labextension list
         jupyter labextension list 2>&1 | grep -ie "jupyterlab-rise.*OK"
@@ -75,7 +73,8 @@ jobs:
         sudo rm -rf $(which node)
         sudo rm -rf $(which node)
 
-        pip install "jupyterlab~=4.0" jupyterlab_rise*.whl
+        pip install "jupyterlab>=4.0.0,<5" jupyterlab_rise*.whl
+
 
         jupyter server extension list
         jupyter server extension list 2>&1 | grep -ie "jupyterlab_rise.*OK"
@@ -103,11 +102,11 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: extension-artifacts
-        
+
     - name: Install the extension
       run: |
         set -eux
-        python -m pip install "jupyterlab~=4.0" jupyterlab_rise*.whl
+        python -m pip install "jupyterlab>=4.0.0,<5" jupyterlab_rise*.whl
 
     - name: Install dependencies
       working-directory: ui-tests

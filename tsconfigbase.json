@@ -18,7 +18,6 @@
     "strict": true,
     "strictNullChecks": true,
     "target": "es2018",
-    "types": ["jest"],
     "sourceMap": true
   },
   "include": ["src/*"]

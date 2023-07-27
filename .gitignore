@@ -1,7 +1,7 @@
 *.bundle.*
-.yarn
 lib/
 node_modules/
+*.log
 .eslintcache
 .stylelintcache
 *.egg-info/
@@ -10,6 +10,8 @@ node_modules/
 jupyterlab_rise/labextension
 # Version file is handled by hatchling
 jupyterlab_rise/_version.py
+jupyterlab_rise/schemas
+jupyterlab_rise/static
 
 # Integration tests
 ui-tests/test-results/
@@ -65,6 +67,7 @@ htmlcov/
 .coverage.*
 .cache
 nosetests.xml
+coverage/
 coverage.xml
 *.cover
 .hypothesis/
@@ -119,5 +122,6 @@ dmypy.json
 
 # OSX files
 .DS_Store
-jupyterlab_rise/schemas
-jupyterlab_rise/static
+
+# Yarn cache
+.yarn/

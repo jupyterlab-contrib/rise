@@ -1,12 +1,12 @@
 [build-system]
-requires = ["hatchling>=1.4.0", "jupyterlab>=4.0.0,<5.0.0", "hatch-nodejs-version"]
+requires = ["hatchling>=1.5.0", "jupyterlab>=4.0.0,<5", "hatch-nodejs-version"]
 build-backend = "hatchling.build"
 
 [project]
 name = "jupyterlab_rise"
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
     "Framework :: Jupyter",
     "Framework :: Jupyter :: JupyterLab",
@@ -16,14 +16,12 @@ classifiers = [
     "License :: OSI Approved :: BSD License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
 dependencies = [
-    "jupyterlab>=4.0.0,<5",
     "jupyter_server>=2.0.1,<3"
 ]
 dynamic = ["version", "description", "authors", "urls", "keywords"]
@@ -53,8 +51,7 @@ artifacts = ["jupyterlab_rise/schemas", "jupyterlab_rise/static"]
 [tool.hatch.build.targets.wheel.shared-data]
 "jupyterlab_rise/labextension" = "share/jupyter/labextensions/jupyterlab-rise"
 "install.json" = "share/jupyter/labextensions/jupyterlab-rise/install.json"
-"jupyter-config/server_config" = "etc/jupyter/jupyter_server_config.d"
-"jupyter-config/nbconfig" = "etc/jupyter/jupyter_notebook_config.d"
+"jupyter-config/server-config" = "etc/jupyter/jupyter_server_config.d"
 
 [tool.hatch.build.hooks.version]
 path = "jupyterlab_rise/_version.py"
@@ -73,7 +70,7 @@ build_cmd = "build:prod"
 npm = ["jlpm"]
 
 [tool.hatch.build.hooks.jupyter-builder.editable-build-kwargs]
-build_cmd = "install:extension"
+build_cmd = "build"
 npm = ["jlpm"]
 source_dir = "src"
 build_dir = "jupyterlab_rise/labextension"
