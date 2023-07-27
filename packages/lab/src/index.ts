@@ -290,7 +290,7 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
             ?.model;
           if (cellModel) {
             const currentValue =
-              (cellModel.metadata.get('slideshow') as
+              (cellModel.getMetadata('slideshow') as
                 | ReadonlyPartialJSONObject
                 | undefined) ?? {};
             if (value !== currentValue['slide_type']) {
@@ -302,9 +302,9 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
               }
 
               if (Object.keys(newValue).length > 0) {
-                cellModel.metadata.set('slideshow', newValue);
+                cellModel.setMetadata('slideshow', newValue);
               } else {
-                cellModel.metadata.delete('slideshow');
+                cellModel.deleteMetadata('slideshow');
               }
             }
           }
@@ -318,7 +318,7 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
             ?.model;
           if (cellModel) {
             const currentValue =
-              (cellModel.metadata.get('slideshow') as
+              (cellModel.getMetadata('slideshow') as
                 | ReadonlyPartialJSONObject
                 | undefined) ?? {};
             return currentValue['slide_type'] === value && !!value;
@@ -350,8 +350,7 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
           await panel.context.ready;
 
           let autolaunch: boolean =
-            // @ts-expect-error Unknown type
-            (panel.content.model?.metadata.get('rise') ?? {})['autolaunch'] ??
+            (panel.content.model?.getMetadata('rise') ?? {})['autolaunch'] ??
             false;
           if (settings) {
             // @ts-expect-error unknown type

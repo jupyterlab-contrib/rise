@@ -18,7 +18,7 @@ jobs:
       uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
 
     - name: Install dependencies
-      run: python -m pip install -U jupyterlab~=3.1
+      run: python -m pip install -U jupyterlab~=4.0
 
     - name: Lint the extension
       run: |
@@ -60,8 +60,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
     - name: Install Python
       uses: actions/setup-python@v4
       with:
@@ -77,14 +75,14 @@ jobs:
         sudo rm -rf $(which node)
         sudo rm -rf $(which node)
 
-        pip install "jupyterlab~=3.1" jupyterlab_rise*.whl
+        pip install "jupyterlab~=4.0" jupyterlab_rise*.whl
 
         jupyter server extension list
         jupyter server extension list 2>&1 | grep -ie "jupyterlab_rise.*OK"
 
         jupyter labextension list
         jupyter labextension list 2>&1 | grep -ie "jupyterlab-rise.*OK"
-        python -m jupyterlab.browser_check --no-chrome-test
+        python -m jupyterlab.browser_check --no-browser-test
 
   integration-tests:
     name: Integration tests
@@ -109,7 +107,7 @@ jobs:
     - name: Install the extension
       run: |
         set -eux
-        python -m pip install "jupyterlab~=3.1" jupyterlab_rise*.whl
+        python -m pip install "jupyterlab~=4.0" jupyterlab_rise*.whl
 
     - name: Install dependencies
       working-directory: ui-tests

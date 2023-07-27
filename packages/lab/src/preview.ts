@@ -201,10 +201,10 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
     const ready = new PromiseDelegate<boolean>();
 
     const setReady = () => {
-      iframe.contentWindow!.removeEventListener('load', setReady);
+      iframe.contentWindow?.removeEventListener('load', setReady);
 
       const waitForReveal = setInterval(() => {
-        if (iframe.contentDocument!.querySelector('.reveal')) {
+        if (iframe.contentDocument?.querySelector('.reveal')) {
           clearInterval(waitForReveal);
           ready.resolve(true);
         }
@@ -214,7 +214,7 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
     if (iframe.contentDocument?.readyState === 'complete') {
       setReady();
     } else {
-      iframe.contentWindow!.addEventListener('load', setReady);
+      iframe.contentWindow?.addEventListener('load', setReady);
     }
 
     return ready.promise;

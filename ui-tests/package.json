@@ -5,9 +5,11 @@
   "private": true,
   "scripts": {
     "start": "jupyter lab --config jupyter_server_test_config.py",
-    "test": "jlpm playwright test"
+    "test": "jlpm playwright test",
+    "test:update": "jlpm playwright test --update-snapshots"
   },
   "devDependencies": {
-    "@jupyterlab/galata": "^4.3.0"
+    "@jupyterlab/galata": "^5.0.0",
+    "@playwright/test": "^1.32.0"
   }
 }

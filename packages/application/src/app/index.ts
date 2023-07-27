@@ -6,7 +6,6 @@ import { createRendermimePlugins } from '@jupyterlab/application/lib/mimerendere
 import { PageConfig } from '@jupyterlab/coreutils';
 import { DocumentRegistry } from '@jupyterlab/docregistry';
 import { IRenderMime } from '@jupyterlab/rendermime-interfaces';
-import { IIterator, iter } from '@lumino/algorithm';
 import { Token } from '@lumino/coreutils';
 import { Message } from '@lumino/messaging';
 import { Signal, ISignal } from '@lumino/signaling';
@@ -84,8 +83,8 @@ export class RiseShell extends Widget implements JupyterFrontEnd.IShell {
    *
    * @param area - Optional regions in the shell whose widgets are iterated.
    */
-  widgets(area?: string): IIterator<Widget> {
-    return iter((this.layout as BoxLayout).widgets);
+  *widgets(area?: string): IterableIterator<Widget> {
+    yield* (this.layout as BoxLayout).widgets;
   }
 
   /**
