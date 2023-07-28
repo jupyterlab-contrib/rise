@@ -72,6 +72,7 @@
         "typescript": "~5.0.4"
     },
     "eslintIgnore": [
+        "app/build",
         "node_modules",
         "dist",
         "coverage",
@@ -89,7 +90,7 @@
         ],
         "parser": "@typescript-eslint/parser",
         "parserOptions": {
-            "project": "tsconfig.json",
+            "project": "tsconfig.eslint.json",
             "sourceType": "module"
         },
         "plugins": [
@@ -156,6 +157,7 @@
         ],
         "rules": {
             "property-no-vendor-prefix": null,
+            "selector-class-pattern": null,
             "selector-no-vendor-prefix": null,
             "value-no-vendor-prefix": null
         }

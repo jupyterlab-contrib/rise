@@ -1,9 +1,0 @@
-node_modules
-dist
-coverage
-**/*.d.ts
-tests
-app/build
-
-**/__tests__
-ui-tests

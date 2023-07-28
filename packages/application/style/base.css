@@ -384,7 +384,7 @@
   display: none;
 }
 
-.rise-enabled #help_b,
+.rise-enabled #help-b,
 .rise-enabled .chalkboard-button {
   color: #727272;
   position: fixed !important;
@@ -392,7 +392,7 @@
   cursor: pointer;
 }
 
-.rise-enabled #help_b {
+.rise-enabled #help-b {
   left: 0.6em;
   bottom: 0.55em;
 }
