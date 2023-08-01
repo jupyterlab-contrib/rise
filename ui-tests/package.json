@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab-rise-ui-tests",
-  "version": "1.0.0",
+  "version": "0.40.0",
   "description": "JupyterLab jupyterlab-rise Integration Tests",
   "private": true,
   "scripts": {
