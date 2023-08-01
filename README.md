@@ -16,6 +16,12 @@ To install the extension, execute:
 pip install jupyterlab_rise
 ```
 
+For JupyterLab 3.x, install version prior to 0.40.0:
+
+```bash
+pip install "jupyterlab_rise<0.40.0"
+```
+
 ## Uninstall
 
 To remove the extension, execute:
