@@ -851,7 +851,7 @@ namespace Rise {
   }
 
   function toggleAllRiseButtons() {
-    for (const selector of ['#help_b', '#toggle-chalkboard', '#toggle-notes']) {
+    for (const selector of ['#help-b', '#toggle-chalkboard', '#toggle-notes']) {
       const element = document.querySelector(selector) as HTMLElement | null;
       if (element) {
         element.style.visibility =
@@ -1191,7 +1191,7 @@ namespace Rise {
     trans: TranslationBundle
   ): void {
     const helpButton = document.createElement('i');
-    helpButton.setAttribute('id', 'help_b');
+    helpButton.setAttribute('id', 'help-b');
     helpButton.setAttribute('title', trans.__('Reveal Shortcuts Help'));
     helpButton.classList.add('fa-question', 'fa-4x', 'fa');
 
