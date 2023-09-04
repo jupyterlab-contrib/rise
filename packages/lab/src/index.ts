@@ -103,7 +103,7 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
     }
 
     const factory = new RisePreviewFactory(getRiseUrl, commands, {
-      name: 'rise',
+      name: 'Rise Slides',
       fileTypes: ['notebook'],
       modelName: 'notebook'
     });
