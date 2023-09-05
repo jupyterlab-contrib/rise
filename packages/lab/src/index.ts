@@ -32,13 +32,10 @@ import { ReadonlyPartialJSONObject } from '@lumino/coreutils';
 
 import { fullScreenIcon, RISEIcon } from './icons';
 
-import {
-  RisePreview,
-  IRisePreviewTracker,
-  RisePreviewFactory
-} from './preview';
+import { RisePreview, RisePreviewFactory } from './preview';
+import { IRisePreviewTracker } from './tokens';
 
-export { IRisePreviewTracker } from './preview';
+export { IRisePreviewTracker } from './tokens';
 
 /**
  * Command IDs namespace for JupyterLab RISE extension

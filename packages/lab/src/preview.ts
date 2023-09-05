@@ -1,9 +1,4 @@
-import {
-  IFrame,
-  ToolbarButton,
-  IWidgetTracker,
-  Toolbar
-} from '@jupyterlab/apputils';
+import { IFrame, ToolbarButton, Toolbar } from '@jupyterlab/apputils';
 
 import {
   ABCWidgetFactory,
@@ -19,7 +14,7 @@ import { refreshIcon } from '@jupyterlab/ui-components';
 
 import { CommandRegistry } from '@lumino/commands';
 
-import { PromiseDelegate, Token } from '@lumino/coreutils';
+import { PromiseDelegate } from '@lumino/coreutils';
 
 import { Message } from '@lumino/messaging';
 
@@ -28,19 +23,6 @@ import { Signal } from '@lumino/signaling';
 import { Widget } from '@lumino/widgets';
 
 import { fullScreenIcon, RISEIcon } from './icons';
-
-/**
- * A class that tracks Rise Preview widgets.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IRisePreviewTracker extends IWidgetTracker<RisePreview> {}
-
-/**
- * The Rise Preview tracker token.
- */
-export const IRisePreviewTracker = new Token<IRisePreviewTracker>(
-  'jupyterlab-rise:IRisePreviewTracker'
-);
 
 /**
  * A DocumentWidget that shows a Rise preview in an IFrame.
