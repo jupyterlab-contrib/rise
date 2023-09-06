@@ -239,6 +239,13 @@ export namespace RisePreview {
     renderOnSave?: boolean;
   }
 
+  /**
+   * Generate the URL required to open a file as RISE slideshow.
+   *
+   * @param path File path
+   * @param activeCellIndex Active cell index
+   * @returns URL to open
+   */
   export function getRiseUrl(path: string, activeCellIndex?: number): string {
     const baseUrl = PageConfig.getBaseUrl();
     let url = `${baseUrl}rise/${path}`;
@@ -248,6 +255,9 @@ export namespace RisePreview {
     return url;
   }
 
+  /**
+   * RISE Preview document factory token implementation.
+   */
   export class FactoryToken implements IRisePreviewFactory {
     constructor({
       commands,
@@ -268,6 +278,14 @@ export namespace RisePreview {
       this._updateFactory();
     }
 
+    /**
+     * Add a new file type to the RISE preview factory.
+     *
+     * #### Notes
+     * Useful to add file types for jupytext.
+     *
+     * @param ft File type
+     */
     addFileType(ft: string): void {
       if (!this._fileTypes.includes(ft)) {
         this._fileTypes.push(ft);
@@ -275,6 +293,9 @@ export namespace RisePreview {
       }
     }
 
+    /**
+     * Signal emitted when a RISE preview is created.
+     */
     get widgetCreated(): ISignal<IRisePreviewFactory, RisePreview> {
       return this._widgetCreated;
     }
@@ -312,6 +333,9 @@ export namespace RisePreview {
   }
 }
 
+/**
+ * RISE Preview widget factory
+ */
 export class RisePreviewFactory extends ABCWidgetFactory<
   RisePreview,
   INotebookModel

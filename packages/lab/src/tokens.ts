@@ -18,15 +18,26 @@ export const IRisePreviewTracker = new Token<IRisePreviewTracker>(
 );
 
 /**
- *
+ * RISE Preview document factory interface
  */
 export interface IRisePreviewFactory {
+  /**
+   * Signal emitted when a RISE preview is created.
+   */
   readonly widgetCreated: ISignal<IRisePreviewFactory, RisePreview>;
+  /**
+   * Add a new file type to the RISE preview factory.
+   *
+   * #### Notes
+   * Useful to add file types for jupytext.
+   *
+   * @param ft File type
+   */
   addFileType(ft: string): void;
 }
 
 /**
- *
+ * RISE Preview factory token.
  */
 export const IRisePreviewFactory = new Token<IRisePreviewFactory>(
   'jupyterlab-rise:IRisePreviewFactory',
