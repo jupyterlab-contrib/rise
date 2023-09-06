@@ -1,5 +1,7 @@
 import { IFrame, ToolbarButton, Toolbar } from '@jupyterlab/apputils';
 
+import { PageConfig, URLExt } from '@jupyterlab/coreutils';
+
 import {
   ABCWidgetFactory,
   DocumentRegistry,
@@ -16,13 +18,16 @@ import { CommandRegistry } from '@lumino/commands';
 
 import { PromiseDelegate } from '@lumino/coreutils';
 
+import { DisposableSet, IDisposable } from '@lumino/disposable';
+
 import { Message } from '@lumino/messaging';
 
-import { Signal } from '@lumino/signaling';
+import { ISignal, Signal } from '@lumino/signaling';
 
 import { Widget } from '@lumino/widgets';
 
 import { fullScreenIcon, RISEIcon } from './icons';
+import { IRisePreviewFactory } from './tokens';
 
 /**
  * A DocumentWidget that shows a Rise preview in an IFrame.
@@ -212,6 +217,8 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
  * A namespace for RisePreview statics.
  */
 export namespace RisePreview {
+  export const FACTORY_NAME = 'rise';
+
   /**
    * Instantiation options for `RisePreview`.
    */
@@ -230,6 +237,78 @@ export namespace RisePreview {
      * Whether to reload the preview on context saved.
      */
     renderOnSave?: boolean;
+  }
+
+  export function getRiseUrl(path: string, activeCellIndex?: number): string {
+    const baseUrl = PageConfig.getBaseUrl();
+    let url = `${baseUrl}rise/${path}`;
+    if (typeof activeCellIndex === 'number') {
+      url += URLExt.objectToQueryString({ activeCellIndex });
+    }
+    return url;
+  }
+
+  export class FactoryToken implements IRisePreviewFactory {
+    constructor({
+      commands,
+      docRegistry,
+      fileTypes,
+      translator
+    }: {
+      commands: CommandRegistry;
+      docRegistry: DocumentRegistry;
+      fileTypes?: string[];
+      translator?: ITranslator;
+    }) {
+      this._commands = commands;
+      this._docRegistry = docRegistry;
+      this._fileTypes = fileTypes ?? ['notebook'];
+      this._translator = translator ?? nullTranslator;
+
+      this._updateFactory();
+    }
+
+    addFileType(ft: string): void {
+      if (!this._fileTypes.includes(ft)) {
+        this._fileTypes.push(ft);
+        this._updateFactory();
+      }
+    }
+
+    get widgetCreated(): ISignal<IRisePreviewFactory, RisePreview> {
+      return this._widgetCreated;
+    }
+
+    private _updateFactory(): void {
+      if (this._disposeFactory) {
+        this._disposeFactory.dispose();
+        this._disposeFactory = null;
+      }
+
+      const trans = this._translator.load('rise');
+      const factory = new RisePreviewFactory(getRiseUrl, this._commands, {
+        name: FACTORY_NAME,
+        label: trans.__('Rise Slides'),
+        fileTypes: this._fileTypes,
+        modelName: 'notebook'
+      });
+
+      factory.widgetCreated.connect((_, args) => {
+        this._widgetCreated.emit(args);
+      }, this);
+
+      this._disposeFactory = DisposableSet.from([
+        this._docRegistry.addWidgetFactory(factory),
+        factory
+      ]);
+    }
+
+    private _commands: CommandRegistry;
+    private _disposeFactory: IDisposable | null = null;
+    private _docRegistry: DocumentRegistry;
+    private _fileTypes: string[];
+    private _translator: ITranslator;
+    private _widgetCreated = new Signal<FactoryToken, RisePreview>(this);
   }
 }
 

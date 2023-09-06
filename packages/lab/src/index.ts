@@ -11,8 +11,6 @@ import {
   WidgetTracker
 } from '@jupyterlab/apputils';
 
-import { PageConfig, URLExt } from '@jupyterlab/coreutils';
-
 import { DocumentRegistry } from '@jupyterlab/docregistry';
 
 import {
@@ -24,7 +22,7 @@ import {
 
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 
-import { ITranslator } from '@jupyterlab/translation';
+import { ITranslator, nullTranslator } from '@jupyterlab/translation';
 
 import { toArray } from '@lumino/algorithm';
 
@@ -32,10 +30,11 @@ import { ReadonlyPartialJSONObject } from '@lumino/coreutils';
 
 import { fullScreenIcon, RISEIcon } from './icons';
 
-import { RisePreview, RisePreviewFactory } from './preview';
-import { IRisePreviewTracker } from './tokens';
+import { RisePreview } from './preview';
 
-export { IRisePreviewTracker } from './tokens';
+import { IRisePreviewFactory, IRisePreviewTracker } from './tokens';
+
+export { IRisePreviewFactory, IRisePreviewTracker } from './tokens';
 
 /**
  * Command IDs namespace for JupyterLab RISE extension
@@ -56,27 +55,46 @@ namespace CommandIDs {
   export const riseSetSlideType = 'RISE:set-slide-type';
 }
 
+const factory: JupyterFrontEndPlugin<IRisePreviewFactory> = {
+  id: 'jupyterlab-rise:factory',
+  provides: IRisePreviewFactory,
+  optional: [ITranslator],
+  activate: (
+    app: JupyterFrontEnd,
+    translator: ITranslator | null
+  ): IRisePreviewFactory => {
+    const { commands, docRegistry } = app;
+    return new RisePreview.FactoryToken({
+      commands,
+      docRegistry,
+      translator: translator ?? undefined
+    });
+  }
+};
+
 /**
  * Open the notebook with RISE.
  */
 const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
   id: 'jupyterlab-rise:plugin',
   autoStart: true,
-  requires: [ITranslator],
+  requires: [IRisePreviewFactory],
   optional: [
     INotebookTracker,
     ICommandPalette,
     ILayoutRestorer,
-    ISettingRegistry
+    ISettingRegistry,
+    ITranslator
   ],
   provides: IRisePreviewTracker,
   activate: (
     app: JupyterFrontEnd,
-    translator: ITranslator,
+    factory: IRisePreviewFactory,
     notebookTracker: INotebookTracker | null,
     palette: ICommandPalette | null,
     restorer: ILayoutRestorer | null,
-    settingRegistry: ISettingRegistry | null
+    settingRegistry: ISettingRegistry | null,
+    translator: ITranslator | null
   ): IRisePreviewTracker => {
     console.log('JupyterLab extension jupyterlab-rise is activated!');
 
@@ -89,8 +107,8 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
       return tracker;
     }
 
-    const { commands, docRegistry, shell } = app;
-    const trans = translator.load('rise');
+    const { commands, shell } = app;
+    const trans = (translator ?? nullTranslator).load('rise');
 
     let settings: ISettingRegistry.ISettings | null = null;
     if (settingRegistry) {
@@ -99,27 +117,18 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
       });
     }
 
-    const factory = new RisePreviewFactory(getRiseUrl, commands, {
-      name: 'rise',
-      label: trans.__('Rise Slides'),
-      fileTypes: ['notebook'],
-      modelName: 'notebook'
-    });
-
     if (restorer) {
       restorer.restore(tracker, {
         // Need to modify to handle auto full screen
         command: 'docmanager:open',
         args: panel => ({
           path: panel.context.path,
-          factory: factory.name
+          factory: RisePreview.FACTORY_NAME
         }),
         name: panel => panel.context.path,
         when: app.serviceManager.ready
       });
     }
-
-    docRegistry.addWidgetFactory(factory);
 
     function getCurrent(args: ReadonlyPartialJSONObject): NotebookPanel | null {
       const widget = notebookTracker?.currentWidget ?? null;
@@ -137,15 +146,6 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
         notebookTracker?.currentWidget !== null &&
         notebookTracker?.currentWidget === shell.currentWidget
       );
-    }
-
-    function getRiseUrl(path: string, activeCellIndex?: number): string {
-      const baseUrl = PageConfig.getBaseUrl();
-      let url = `${baseUrl}rise/${path}`;
-      if (typeof activeCellIndex === 'number') {
-        url += URLExt.objectToQueryString({ activeCellIndex });
-      }
-      return url;
     }
 
     factory.widgetCreated.connect((sender, widget) => {
@@ -173,7 +173,10 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
         }
         await current.context.save();
         window.open(
-          getRiseUrl(current.context.path, current.content.activeCellIndex)
+          RisePreview.getRiseUrl(
+            current.context.path,
+            current.content.activeCellIndex
+          )
         );
       },
       isEnabled
@@ -195,7 +198,7 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
             'docmanager:open',
             {
               path: context.path,
-              factory: 'rise',
+              factory: RisePreview.FACTORY_NAME,
               options: {
                 mode: 'split-right'
               }
@@ -375,4 +378,4 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
   }
 };
 
-export default plugin;
+export default [factory, plugin];
