@@ -89,7 +89,12 @@ export const plugin: JupyterFrontEndPlugin<void> = {
       app.restored
     ]).then(async ([settings]) => {
       const notebookPath = PageConfig.getOption('notebookPath');
-      const notebookPanel = documentManager.open(notebookPath) as NotebookPanel;
+      const notebookPanel = (documentManager.open(notebookPath, 'Notebook') ??
+        // If the file cannot be opened with the Notebook factory, try jupytext
+        documentManager.open(
+          notebookPath,
+          'Jupytext Notebook'
+        )) as NotebookPanel;
       // With the new windowing, some cells are not visible and we need
       // to deactivate the windowing and wait for each cell to be ready.
       notebookPanel.content.notebookConfig = {
