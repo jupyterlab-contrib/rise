@@ -1,9 +1,6 @@
-import {
-  IFrame,
-  ToolbarButton,
-  IWidgetTracker,
-  Toolbar
-} from '@jupyterlab/apputils';
+import { IFrame, ToolbarButton, Toolbar } from '@jupyterlab/apputils';
+
+import { PageConfig, URLExt } from '@jupyterlab/coreutils';
 
 import {
   ABCWidgetFactory,
@@ -19,28 +16,18 @@ import { refreshIcon } from '@jupyterlab/ui-components';
 
 import { CommandRegistry } from '@lumino/commands';
 
-import { PromiseDelegate, Token } from '@lumino/coreutils';
+import { PromiseDelegate } from '@lumino/coreutils';
+
+import { DisposableSet, IDisposable } from '@lumino/disposable';
 
 import { Message } from '@lumino/messaging';
 
-import { Signal } from '@lumino/signaling';
+import { ISignal, Signal } from '@lumino/signaling';
 
 import { Widget } from '@lumino/widgets';
 
 import { fullScreenIcon, RISEIcon } from './icons';
-
-/**
- * A class that tracks Rise Preview widgets.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IRisePreviewTracker extends IWidgetTracker<RisePreview> {}
-
-/**
- * The Rise Preview tracker token.
- */
-export const IRisePreviewTracker = new Token<IRisePreviewTracker>(
-  'jupyterlab-rise:IRisePreviewTracker'
-);
+import { IRisePreviewFactory } from './tokens';
 
 /**
  * A DocumentWidget that shows a Rise preview in an IFrame.
@@ -230,6 +217,8 @@ export class RisePreview extends DocumentWidget<IFrame, INotebookModel> {
  * A namespace for RisePreview statics.
  */
 export namespace RisePreview {
+  export const FACTORY_NAME = 'rise';
+
   /**
    * Instantiation options for `RisePreview`.
    */
@@ -249,8 +238,100 @@ export namespace RisePreview {
      */
     renderOnSave?: boolean;
   }
+
+  /**
+   * Generate the URL required to open a file as RISE slideshow.
+   *
+   * @param path File path
+   * @param activeCellIndex Active cell index
+   * @returns URL to open
+   */
+  export function getRiseUrl(path: string, activeCellIndex?: number): string {
+    const baseUrl = PageConfig.getBaseUrl();
+    let url = `${baseUrl}rise/${path}`;
+    if (typeof activeCellIndex === 'number') {
+      url += URLExt.objectToQueryString({ activeCellIndex });
+    }
+    return url;
+  }
+
+  /**
+   * RISE Preview document factory token implementation.
+   */
+  export class FactoryToken implements IRisePreviewFactory {
+    constructor({
+      commands,
+      docRegistry,
+      fileTypes,
+      translator
+    }: {
+      commands: CommandRegistry;
+      docRegistry: DocumentRegistry;
+      fileTypes?: string[];
+      translator?: ITranslator;
+    }) {
+      this._commands = commands;
+      this._docRegistry = docRegistry;
+      this._fileTypes = fileTypes ?? ['notebook'];
+
+      this._updateFactory();
+    }
+
+    /**
+     * Add a new file type to the RISE preview factory.
+     *
+     * #### Notes
+     * Useful to add file types for jupytext.
+     *
+     * @param ft File type
+     */
+    addFileType(ft: string): void {
+      if (!this._fileTypes.includes(ft)) {
+        this._fileTypes.push(ft);
+        this._updateFactory();
+      }
+    }
+
+    /**
+     * Signal emitted when a RISE preview is created.
+     */
+    get widgetCreated(): ISignal<IRisePreviewFactory, RisePreview> {
+      return this._widgetCreated;
+    }
+
+    private _updateFactory(): void {
+      if (this._disposeFactory) {
+        this._disposeFactory.dispose();
+        this._disposeFactory = null;
+      }
+
+      const factory = new RisePreviewFactory(getRiseUrl, this._commands, {
+        name: FACTORY_NAME,
+        fileTypes: this._fileTypes,
+        modelName: 'notebook'
+      });
+
+      factory.widgetCreated.connect((_, args) => {
+        this._widgetCreated.emit(args);
+      }, this);
+
+      this._disposeFactory = DisposableSet.from([
+        this._docRegistry.addWidgetFactory(factory),
+        factory
+      ]);
+    }
+
+    private _commands: CommandRegistry;
+    private _disposeFactory: IDisposable | null = null;
+    private _docRegistry: DocumentRegistry;
+    private _fileTypes: string[];
+    private _widgetCreated = new Signal<FactoryToken, RisePreview>(this);
+  }
 }
 
+/**
+ * RISE Preview widget factory
+ */
 export class RisePreviewFactory extends ABCWidgetFactory<
   RisePreview,
   INotebookModel

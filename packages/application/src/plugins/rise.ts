@@ -88,7 +88,12 @@ export const plugin: JupyterFrontEndPlugin<void> = {
       app.restored
     ]).then(async ([settings]) => {
       const notebookPath = PageConfig.getOption('notebookPath');
-      const notebookPanel = documentManager.open(notebookPath) as NotebookPanel;
+      const notebookPanel = (documentManager.open(notebookPath, 'Notebook') ??
+        // If the file cannot be opened with the Notebook factory, try jupytext
+        documentManager.open(
+          notebookPath,
+          'Jupytext Notebook'
+        )) as NotebookPanel;
 
       Rise.registerCommands(app.commands, notebookPanel, trans);
       if (palette) {
