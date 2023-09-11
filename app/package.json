@@ -1,6 +1,6 @@
 {
   "name": "rise-app",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "build": "webpack",
@@ -56,7 +56,7 @@
     "@jupyterlab/theme-light-extension": "^3.0.0",
     "@jupyterlab/translation-extension": "^3.0.0",
     "@jupyterlab/vega5-extension": "^3.0.0",
-    "jupyterlab-rise-application": "^0.2.1"
+    "jupyterlab-rise-application": "^0.3.0"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.0.0",
