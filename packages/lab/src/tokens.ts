@@ -13,8 +13,7 @@ export interface IRisePreviewTracker extends IWidgetTracker<RisePreview> {}
  * The Rise Preview tracker token.
  */
 export const IRisePreviewTracker = new Token<IRisePreviewTracker>(
-  'jupyterlab-rise:IRisePreviewTracker',
-  'Adds a tracker for RISE slides preview widgets.'
+  'jupyterlab-rise:IRisePreviewTracker'
 );
 
 /**
@@ -40,6 +39,5 @@ export interface IRisePreviewFactory {
  * RISE Preview factory token.
  */
 export const IRisePreviewFactory = new Token<IRisePreviewFactory>(
-  'jupyterlab-rise:IRisePreviewFactory',
-  'Customize the RISE slides preview factory.'
+  'jupyterlab-rise:IRisePreviewFactory'
 );
