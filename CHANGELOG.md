@@ -2,6 +2,27 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.41.0
+
+([Full Changelog](https://github.com/jupyterlab-contrib/rise/compare/jupyterlab-rise-application@0.40.0...6f3dd328c70ae79c8a4db0bbd32fa79d541dda64))
+
+### Enhancements made
+
+- Add factory token for jupytext customization [#50](https://github.com/jupyterlab-contrib/rise/pull/50) ([@fcollonval](https://github.com/fcollonval))
+- Change document name [#49](https://github.com/jupyterlab-contrib/rise/pull/49) ([@hbcarlos](https://github.com/hbcarlos))
+
+### Maintenance and upkeep improvements
+
+- Remove prettier config duplication [#53](https://github.com/jupyterlab-contrib/rise/pull/53) ([@fcollonval](https://github.com/fcollonval))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterlab-contrib/rise/graphs/contributors?from=2023-08-01&to=2023-09-12&type=c))
+
+[@fcollonval](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Afcollonval+updated%3A2023-08-01..2023-09-12&type=Issues) | [@github-actions](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Agithub-actions+updated%3A2023-08-01..2023-09-12&type=Issues) | [@hbcarlos](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Ahbcarlos+updated%3A2023-08-01..2023-09-12&type=Issues) | [@lumberbot-app](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Alumberbot-app+updated%3A2023-08-01..2023-09-12&type=Issues)
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.40.0
 
 ([Full Changelog](https://github.com/jupyterlab-contrib/rise/compare/jupyterlab-rise-application@0.2.1...03205e88c7be3faf1be8c9765dfc88c252740430))
@@ -18,8 +39,6 @@
 ([GitHub contributors page for this release](https://github.com/jupyterlab-contrib/rise/graphs/contributors?from=2023-07-26&to=2023-08-01&type=c))
 
 [@fcollonval](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Afcollonval+updated%3A2023-07-26..2023-08-01&type=Issues) | [@github-actions](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Agithub-actions+updated%3A2023-07-26..2023-08-01&type=Issues) | [@hbcarlos](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Ahbcarlos+updated%3A2023-07-26..2023-08-01&type=Issues)
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.2.1
 
