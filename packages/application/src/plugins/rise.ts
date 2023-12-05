@@ -883,10 +883,33 @@ namespace Rise {
   ): Promise<void> {
     document.body.classList.add('rise-enabled');
 
+    // Allow the panel to receive focus, to send it to the notebook.
+    // NOTES:
+    // Clicking in the notebook panel seems to fallback on reveal background,
+    // which gives the focus to the body element (at least it is the one targeted
+    // when using `document.activeElement`), without triggering the onfocus event.
+    panel.node.tabIndex = -1;
+
     // Add the main reveal.js classes
     const notebook = panel.content;
     panel.addClass('reveal');
     notebook.addClass('slides');
+
+    // Move the focus to the notebook when the iframe get the focus.
+    document.body.onfocus = event => {
+      const target = event.target;
+      if (target instanceof Window) {
+        notebook.node.focus();
+      }
+    };
+
+    // Move the focus to the notebook when the panel get the focus.
+    panel.node.onfocus = event => {
+      const target = event.target as HTMLElement;
+      if (!notebook.node.contains(target)) {
+        notebook.node.focus();
+      }
+    };
 
     // Header
     // Available themes are in static/css/theme
