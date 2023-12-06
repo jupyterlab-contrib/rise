@@ -901,7 +901,10 @@ namespace Rise {
     // https://github.com/jupyterlab-contrib/rise/issues/509
     // Attempt to load rise.css
     const curdir = PathExt.dirname(panel.sessionContext.path);
-    const riseCssUrl = new URL(PathExt.join("files", curdir, "rise.css"), PageConfig.getBaseUrl());
+    const riseCssUrl = new URL(
+      PathExt.join('files', curdir, 'rise.css'),
+      PageConfig.getBaseUrl()
+    );
     document.head.insertAdjacentHTML(
       'beforeend',
       `<link rel="stylesheet" href="${riseCssUrl.href}" id="rise-custom-css" />`
@@ -910,7 +913,10 @@ namespace Rise {
     const dot_index = name.lastIndexOf('.');
     const stem = dot_index === -1 ? name : name.substr(0, dot_index);
     // associated css
-    const nameCssUrl = new URL(PathExt.join("files", curdir, `${stem}.css`), PageConfig.getBaseUrl());
+    const nameCssUrl = new URL(
+      PathExt.join('files', curdir, `${stem}.css`),
+      PageConfig.getBaseUrl()
+    );
     // Attempt to load css with the same path as notebook
     document.head.insertAdjacentHTML(
       'beforeend',
