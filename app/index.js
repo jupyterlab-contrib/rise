@@ -104,6 +104,7 @@ async function main() {
     require('@jupyterlab/codemirror-extension').default.filter(({ id }) =>
       [
         '@jupyterlab/codemirror-extension:services',
+        '@jupyterlab/codemirror-extension:binding',
         '@jupyterlab/codemirror-extension:codemirror',
         '@jupyterlab/codemirror-extension:languages',
         '@jupyterlab/codemirror-extension:extensions',
