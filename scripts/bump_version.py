@@ -23,7 +23,7 @@ def install_dependencies() -> None:
         import jupyterlab
     except ImportError:
         pkgs.append("jupyterlab~=4.0")
-    
+
     if pkgs:
         run([sys.executable, "-m", "pip", "install"] + pkgs)
 
@@ -75,6 +75,7 @@ def bump(force: bool, spec: str) -> None:
     else:
         raise FileNotFoundError(f"Could not find package.json under dir {path!s}")
 
+    run(["jlpm", "run", "lint"])
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("bump_version", "Bump package version")
