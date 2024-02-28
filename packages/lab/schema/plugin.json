@@ -46,22 +46,22 @@
     {
       "command": "RISE:firstSlide",
       "keys": ["Home"],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:lastSlide",
       "keys": ["End"],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:toggleOverview",
       "keys": ["W"],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:toggleAllRiseButtons",
       "keys": [","],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:fullscreenHelp",
@@ -71,47 +71,47 @@
     {
       "command": "RISE:riseHelp",
       "keys": ["?"],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:chalkboard-clear",
       "keys": ["minus"],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:chalkboard-reset",
       "keys": ["="],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:chalkboard-toggleChalkboard",
       "keys": ["["],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:chalkboard-toggleNotesCanvas",
       "keys": ["]"],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:chalkboard-colorPrev",
       "keys": ["Q"],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:chalkboard-colorNext",
       "keys": ["S"],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:chalkboard-download",
       "keys": ["\\"],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:notes-open",
       "keys": ["T"],
-      "selector": ".lm-Widget.reveal"
+      "selector": ".lm-Widget.reveal .jp-mod-commandMode"
     },
     {
       "command": "RISE:smart-exec",

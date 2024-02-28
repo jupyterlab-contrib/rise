@@ -2,6 +2,30 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.42.0
+
+([Full Changelog](https://github.com/jupyterlab-contrib/rise/compare/jupyterlab-rise-application@0.41.0...78cb44b74af2198ba4211a2c09cc5c2efc32b44d))
+
+### Bugs fixed
+
+- Add the code mirror binding plugin [#62](https://github.com/jupyterlab-contrib/rise/pull/62) ([@brichet](https://github.com/brichet))
+- Fix the shortcut triggered in edit mode [#61](https://github.com/jupyterlab-contrib/rise/pull/61) ([@brichet](https://github.com/brichet))
+
+### Maintenance and upkeep improvements
+
+- Run lint when bumping version [#63](https://github.com/jupyterlab-contrib/rise/pull/63) ([@brichet](https://github.com/brichet))
+- Bump axios from 1.3.3 to 1.6.1 [#59](https://github.com/jupyterlab-contrib/rise/pull/59) ([@dependabot](https://github.com/dependabot))
+- Bump postcss from 8.4.27 to 8.4.31 [#57](https://github.com/jupyterlab-contrib/rise/pull/57) ([@dependabot](https://github.com/dependabot))
+- Bump systeminformation from 5.18.9 to 5.21.8 [#56](https://github.com/jupyterlab-contrib/rise/pull/56) ([@dependabot](https://github.com/dependabot))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterlab-contrib/rise/graphs/contributors?from=2023-09-12&to=2023-12-12&type=c))
+
+[@brichet](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Abrichet+updated%3A2023-09-12..2023-12-12&type=Issues) | [@dependabot](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Adependabot+updated%3A2023-09-12..2023-12-12&type=Issues) | [@github-actions](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Agithub-actions+updated%3A2023-09-12..2023-12-12&type=Issues)
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.41.0
 
 ([Full Changelog](https://github.com/jupyterlab-contrib/rise/compare/jupyterlab-rise-application@0.40.0...6f3dd328c70ae79c8a4db0bbd32fa79d541dda64))
@@ -20,8 +44,6 @@
 ([GitHub contributors page for this release](https://github.com/jupyterlab-contrib/rise/graphs/contributors?from=2023-08-01&to=2023-09-12&type=c))
 
 [@fcollonval](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Afcollonval+updated%3A2023-08-01..2023-09-12&type=Issues) | [@github-actions](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Agithub-actions+updated%3A2023-08-01..2023-09-12&type=Issues) | [@hbcarlos](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Ahbcarlos+updated%3A2023-08-01..2023-09-12&type=Issues) | [@lumberbot-app](https://github.com/search?q=repo%3Ajupyterlab-contrib%2Frise+involves%3Alumberbot-app+updated%3A2023-08-01..2023-09-12&type=Issues)
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.40.0
 
