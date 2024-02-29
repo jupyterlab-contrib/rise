@@ -924,19 +924,26 @@ namespace Rise {
     // https://github.com/jupyterlab-contrib/rise/issues/509
     // Attempt to load rise.css
     const curdir = PathExt.dirname(panel.sessionContext.path);
+    const riseCssUrl = new URL(
+      PathExt.join('files', curdir, 'rise.css'),
+      PageConfig.getBaseUrl()
+    );
     document.head.insertAdjacentHTML(
       'beforeend',
-      `<link rel="stylesheet" href="${PageConfig.getBaseUrl()}files/${curdir}/rise.css" id="rise-custom-css" />`
+      `<link rel="stylesheet" href="${riseCssUrl.href}" id="rise-custom-css" />`
     );
     const name = PathExt.basename(panel.sessionContext.path);
     const dot_index = name.lastIndexOf('.');
     const stem = dot_index === -1 ? name : name.substr(0, dot_index);
     // associated css
-    const name_css = `${curdir}/${stem}.css`;
+    const nameCssUrl = new URL(
+      PathExt.join('files', curdir, `${stem}.css`),
+      PageConfig.getBaseUrl()
+    );
     // Attempt to load css with the same path as notebook
     document.head.insertAdjacentHTML(
       'beforeend',
-      `<link rel="stylesheet" href="${PageConfig.getBaseUrl()}files/${name_css}" id="rise-notebook-css" />`
+      `<link rel="stylesheet" href="${nameCssUrl.href}" id="rise-notebook-css" />`
     );
 
     // Asynchronously import reveal
