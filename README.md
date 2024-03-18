@@ -10,10 +10,16 @@ RISE: "Live" Reveal.js JupyterLab Slideshow extension.
 
 ## Install
 
-To install the extension, execute:
+To install the extension with pip, execute:
 
 ```bash
 pip install jupyterlab_rise
+```
+
+For conda, execute:
+
+```bash
+conda install conda-forge::jupyterlab_rise
 ```
 
 For JupyterLab 3.x, install version prior to 0.40.0:
