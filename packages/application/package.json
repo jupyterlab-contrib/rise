@@ -47,6 +47,8 @@
     "@jupyterlab/services": "^6.0.2",
     "@jupyterlab/settingregistry": "^4.0.2",
     "@jupyterlab/theme-light-extension": "^4.0.2",
+    "@jupyterlab/mermaid": "~4.1.0-alpha.0",
+    "@jupyterlab/mermaid-extension": "~4.1.0-alpha.0",
     "@lumino/commands": "^2.0.1",
     "@lumino/messaging": "^2.0.0",
     "@lumino/signaling": "^2.0.0",
