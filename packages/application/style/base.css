@@ -33,6 +33,11 @@
     chalkboard options */
 }
 
+.rise-enabled .reveal table th,
+.rise-enabled .reveal table td {
+  border-bottom: none;
+}
+
 /* do not apply this on the <body> tag */
 :not(body).rise-enabled {
   background-color: #fff;
@@ -252,6 +257,11 @@
   font-size: 2.25rem;
 }
 
+/* Fix for issue 51 */
+.rise-enabled .jp-RenderedHTMLCommon table + p {
+  font-size: 14px;
+}
+
 .rise-enabled .jp-RenderedHTMLCommon h1 {
   font-size: 4.125rem;
   font-weight: bold;
@@ -410,11 +420,6 @@
 
 .rise-enabled #toggle-notes {
   left: 7em !important;
-}
-
-/* fix for issue #425 */
-.rise-enabled .jp-RenderedHTMLCommon table {
-  font-size: 75%;
 }
 
 /* fix for reveal dark themes */
