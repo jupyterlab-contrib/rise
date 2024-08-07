@@ -33,6 +33,11 @@
     chalkboard options */
 }
 
+.rise-enabled .reveal table th,
+.rise-enabled .reveal table td {
+  border-bottom: none;
+}
+
 /* do not apply this on the <body> tag */
 :not(body).rise-enabled {
   background-color: #fff;
@@ -199,7 +204,7 @@
 }
 
 .rise-enabled .jp-InputArea pre {
-  font-size: 1.25rem;
+  font-size: 14px;
 }
 
 .rise-enabled .jp-InputPrompt {
@@ -212,7 +217,7 @@
 }
 
 .rise-enabled .jp-OutputArea pre {
-  font-size: 1.25rem;
+  font-size: 14px;
 }
 
 .rise-enabled .jp-OutputPrompt {
@@ -246,35 +251,24 @@
   overflow-y: hidden;
 }
 
-.rise-enabled .jp-RenderedHTMLCommon p,
-.rise-enabled .jp-RenderedHTMLCommon li,
-.rise-enabled i {
-  font-size: 2.25rem;
-}
-
 .rise-enabled .jp-RenderedHTMLCommon h1 {
-  font-size: 4.125rem;
   font-weight: bold;
 }
 
 .rise-enabled .jp-RenderedHTMLCommon h2 {
-  font-size: 3.5rem;
   font-weight: bold;
 }
 
 .rise-enabled .jp-RenderedHTMLCommon h3 {
-  font-size: 2.9rem;
   font-weight: bold;
 }
 
 .rise-enabled .jp-RenderedHTMLCommon h4 {
-  font-size: 2.25rem;
   font-weight: bold;
   font-style: italic;
 }
 
 .rise-enabled .jp-RenderedHTMLCommon h5 {
-  font-size: 2rem;
   font-weight: bold;
   font-style: italic;
 }
@@ -410,11 +404,6 @@
 
 .rise-enabled #toggle-notes {
   left: 7em !important;
-}
-
-/* fix for issue #425 */
-.rise-enabled .jp-RenderedHTMLCommon table {
-  font-size: 75%;
 }
 
 /* fix for reveal dark themes */
