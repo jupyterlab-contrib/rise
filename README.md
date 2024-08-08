@@ -6,7 +6,7 @@ RISE: "Live" Reveal.js JupyterLab Slideshow extension.
 
 ## Requirements
 
-- JupyterLab >= 4.0.0
+- JupyterLab >= 4.1.2
 
 ## Install
 
