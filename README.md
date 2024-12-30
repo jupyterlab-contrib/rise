@@ -77,6 +77,8 @@ The `jlpm` command is JupyterLab's pinned version of
 # Change directory to the jupyterlab_rise directory
 # Install package in development mode
 pip install -e ".[test]"
+jlpm install
+jlpm build
 # Link your development version of the extension with JupyterLab
 jupyter labextension develop . --overwrite
 # Server extension must be manually installed in develop mode
