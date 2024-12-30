@@ -3,7 +3,7 @@
 This folder contains the integration tests of the extension.
 
 They are defined using [Playwright](https://playwright.dev/docs/intro) test runner
-and [Galata](https://github.com/jupyterlab/jupyterlab/tree/master/galata) helper.
+and [Galata](https://github.com/jupyterlab/jupyterlab/tree/main/galata) helper.
 
 The Playwright configuration is defined in [playwright.config.js](./playwright.config.js).
 
@@ -12,7 +12,7 @@ in [jupyter_server_test_config.py](./jupyter_server_test_config.py).
 
 The default configuration will produce video for failing tests and an HTML report.
 
-> There is a new experimental UI mode that you may fall in love with; see [that video](https://www.youtube.com/watch?v=jF0yA-JLQW0).
+> There is a UI mode that you may like; see [that video](https://www.youtube.com/watch?v=jF0yA-JLQW0).
 
 ## Run the tests
 
