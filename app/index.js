@@ -120,11 +120,13 @@ async function main() {
     ),
     require('@jupyterlab/mathjax-extension'),
     require('@jupyterlab/markedparser-extension'),
+    require('@jupyterlab/mermaid-extension'),
     require('@jupyterlab/notebook-extension').default.filter(({ id }) =>
       [
         '@jupyterlab/notebook-extension:factory',
         '@jupyterlab/notebook-extension:tracker',
-        '@jupyterlab/notebook-extension:widget-factory'
+        '@jupyterlab/notebook-extension:widget-factory',
+        '@jupyterlab/notebook-extension:cell-executor'
       ].includes(id)
     ),
     require('@jupyterlab/rendermime-extension'),
