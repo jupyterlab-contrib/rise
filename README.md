@@ -37,6 +37,7 @@ pip uninstall jupyterlab_rise
 ```
 
 ## Usage
+
 To mark a cell as a new slide, sub-slide or fragment, open the property inspector and choose the slide type:
 
 <img src="./docs/prop-inspector-slide-type.png" alt="Property inspector slide type" style="width:100%; height:auto;">
