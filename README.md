@@ -10,10 +10,16 @@ RISE: "Live" Reveal.js JupyterLab Slideshow extension.
 
 ## Install
 
-To install the extension, execute:
+To install the extension with pip, execute:
 
 ```bash
 pip install jupyterlab_rise
+```
+
+For conda, execute:
+
+```bash
+conda install conda-forge::jupyterlab_rise
 ```
 
 For JupyterLab 3.x, install version prior to 0.40.0:
@@ -29,6 +35,16 @@ To remove the extension, execute:
 ```bash
 pip uninstall jupyterlab_rise
 ```
+
+## Usage
+
+To mark a cell as a new slide, sub-slide or fragment, open the property inspector and choose the slide type:
+
+<img src="./docs/prop-inspector-slide-type.png" alt="Property inspector slide type" style="width:100%; height:auto;">
+
+Use `Ctrl+R` to render the current notebook as a slidehow:
+
+<img src="./docs/render-slideshow.png" alt="Rendered slideshow" style="width:100%; height:auto;">
 
 ## Troubleshoot
 
