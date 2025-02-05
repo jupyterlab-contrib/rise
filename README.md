@@ -74,7 +74,7 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the jupyterlab_rise directory
+# Change directory to the jupyterlab rise directory; the one containing the pyproject.toml file
 # Install package in development mode
 pip install -e ".[test]"
 jlpm install
