@@ -55,7 +55,7 @@ const style = document.createElement('style');
 function SetStyleValue(type:string, newValue:string) {
   const text = style.textContent?.replace(":root {", "")?.replace("}", "")?.replace("\n", "")?.split(";");
   
-  if(text == undefined) return;
+  if(text === undefined) return;
 
   let result = ":root {\n";
 
@@ -80,7 +80,7 @@ function SetStyleValue(type:string, newValue:string) {
 function GetStyleValue(type:string) {
   const text = style.textContent?.replace(":root {", "")?.replace("}", "")?.split(";");
   
-  if(text == undefined) return "10";
+  if(text === undefined) return "10";
 
   for (let i = 0; i < text?.length; i++) {
     let styleRule = text[i]?.trim();
@@ -977,7 +977,7 @@ namespace Rise {
           SetStyleValue("--jp-ui-table-font-size-rise", tableFontSizeData.input.value);
           SetStyleValue("--jp-ui-code-output", outputFontSizeData.input.value);
 
-          if(headerSizeData.input.value != headerSizeData.originalVal) {
+          if(headerSizeData.input.value !== headerSizeData.originalVal) {
             const headerSize = headerSizeData.input.value
             SetStyleValue("--jp-ui-font-size0-rise", headerSizeData.input.value);
             SetStyleValue("--jp-ui-font-size1-rise", (Number(headerSize) * 0.8).toString());
