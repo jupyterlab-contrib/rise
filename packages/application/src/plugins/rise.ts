@@ -52,13 +52,16 @@ namespace CommandIDs {
 
 const style = document.createElement('style');
 
+// Sets the value of a style variable that is active (defined in base.css)
 function SetStyleValue(type:string, newValue:string) {
+  // Get an array of css entries
   const text = style.textContent?.replace(":root {", "")?.replace("}", "")?.replace("\n", "")?.split(";");
   
   if(text === undefined) return;
 
-  let result = ":root {\n";
+  let result = ":root {\n"; // Start building new css entry
 
+  // Find entry to change and set new value
   for (let i = 0; i < text?.length; i++) {
     let styleRule = text[i]?.trim();
     
@@ -77,11 +80,14 @@ function SetStyleValue(type:string, newValue:string) {
   style.textContent = result;
 }
 
+// Returns the current value of a style variable
 function GetStyleValue(type:string) {
+  // Get an array of css entries
   const text = style.textContent?.replace(":root {", "")?.replace("}", "")?.split(";");
   
-  if(text === undefined) return "10";
+  if(text === undefined) return "10"; // Return default value if no css is found
 
+  // Loop through css entries and search for the right entry
   for (let i = 0; i < text?.length; i++) {
     let styleRule = text[i]?.trim();
     
@@ -90,9 +96,9 @@ function GetStyleValue(type:string) {
     styleRule = styleRule.replace(type + ": ", "");
     styleRule = styleRule.replace("px !important", "");
 
-    return styleRule;
+    return styleRule; // Variable found, return its value
   }
-  return "10";
+  return "10"; // Variable not found, return a default value so nothing breaks
 }
 
 /**
@@ -918,12 +924,14 @@ namespace Rise {
       );
   }
 
+  // Function to open the Font-Size-Menu
   function openFontSizeMenu() {
     const content = document.createElement('div');
       content.style.display = 'flex';
       content.style.flexDirection = 'column';
       
-      function GetAppendData(label: string, varName: string) {
+      // Helper function to get the data needed, to append an entry
+      function getAppendData(label: string, varName: string) {
         const container = document.createElement('div');
         container.style.display = 'flex';
         container.style.alignItems = 'center';
@@ -939,14 +947,16 @@ namespace Rise {
         container.appendChild(labelElem);
         container.appendChild(input);
         
-        return {container: container, input: input, label: labelElem, originalVal: input.value};
+        return {container: container, input: input, label: labelElem, originalVal: input.value}; // Return all the values needed
       }
 
-      const headerSizeData = GetAppendData("Header Font Size:", "--jp-ui-font-size0-rise");
-      const codeFontSizeData = GetAppendData("Code Font Size:", "--jp-code-font-size");
-      const outputFontSizeData = GetAppendData("Output Font Size:", "--jp-ui-code-output");
-      const tableFontSizeData = GetAppendData("Table Font Size:", "--jp-ui-table-font-size-rise");
+      // Build the window
+      const headerSizeData = getAppendData("Header Font Size:", "--jp-ui-font-size0-rise");
+      const codeFontSizeData = getAppendData("Code Font Size:", "--jp-code-font-size");
+      const outputFontSizeData = getAppendData("Output Font Size:", "--jp-ui-code-output");
+      const tableFontSizeData = getAppendData("Table Font Size:", "--jp-ui-table-font-size-rise");
 
+      // Append all values
       content.appendChild(headerSizeData.label);
       content.appendChild(headerSizeData.input);
       content.appendChild(document.createElement('br'));
@@ -962,6 +972,7 @@ namespace Rise {
       const contentWidget = new Widget();
       contentWidget.node.appendChild(content);
 
+      // Show the dialog window
       const dialog = showDialog({
         title: 'Font Size Settings',
         body: contentWidget,
@@ -971,12 +982,15 @@ namespace Rise {
         ]
       });
 
+      // Handle result
       dialog.then(result => {
         if (result.button.accept) {
+          // Set new values
           SetStyleValue("--jp-code-font-size", codeFontSizeData.input.value);
           SetStyleValue("--jp-ui-table-font-size-rise", tableFontSizeData.input.value);
           SetStyleValue("--jp-ui-code-output", outputFontSizeData.input.value);
 
+          // If header value changed, change the others accordingly
           if(headerSizeData.input.value !== headerSizeData.originalVal) {
             const headerSize = headerSizeData.input.value
             SetStyleValue("--jp-ui-font-size0-rise", headerSizeData.input.value);
@@ -987,6 +1001,7 @@ namespace Rise {
           }
         }
 
+        // Remove the window
         contentWidget.dispose();
       });
   }
