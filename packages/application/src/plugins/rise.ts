@@ -45,8 +45,60 @@ namespace CommandIDs {
   export const riseChalkboardColorNext = 'RISE:chalkboard-colorNext';
   export const riseChalkboardDownload = 'RISE:chalkboard-download';
   export const riseNotesOpen = 'RISE:notes-open';
+  export const riseFontSizeCommand = 'RISE:change-font-size';
 
   export const riseShowConfig = 'RISE:show-configuration';
+}
+
+const style = document.createElement('style');
+
+// Sets the value of a style variable that is active (defined in base.css)
+function SetStyleValue(type:string, newValue:string) {
+  // Get an array of css entries
+  const text = style.textContent?.replace(":root {", "")?.replace("}", "")?.replace("\n", "")?.split(";");
+  
+  if(text === undefined) return;
+
+  let result = ":root {\n"; // Start building new css entry
+
+  // Find entry to change and set new value
+  for (let i = 0; i < text?.length; i++) {
+    let styleRule = text[i]?.trim();
+    
+    if(!styleRule.startsWith(type)) {
+      result += styleRule;
+      if (i < text.length - 1) {
+        result += ";";
+      }
+      continue;
+    }
+
+    result += type + ": " + newValue + "px !important;";
+  }
+  result += "}";
+
+  style.textContent = result;
+}
+
+// Returns the current value of a style variable
+function GetStyleValue(type:string) {
+  // Get an array of css entries
+  const text = style.textContent?.replace(":root {", "")?.replace("}", "")?.split(";");
+  
+  if(text === undefined) return "10"; // Return default value if no css is found
+
+  // Loop through css entries and search for the right entry
+  for (let i = 0; i < text?.length; i++) {
+    let styleRule = text[i]?.trim();
+    
+    if(!styleRule.startsWith(type)) continue;
+
+    styleRule = styleRule.replace(type + ": ", "");
+    styleRule = styleRule.replace("px !important", "");
+
+    return styleRule; // Variable found, return its value
+  }
+  return "10"; // Variable not found, return a default value so nothing breaks
 }
 
 /**
@@ -67,6 +119,21 @@ export const plugin: JupyterFrontEndPlugin<void> = {
   ) => {
     // Uncomment in dev mode to send logs to the parent window
     //Private.setupLog();
+
+    // Override css variables (change default values here if needed)
+    style.textContent = `
+      :root {
+        --jp-code-font-size: 20px !important;
+        --jp-ui-font-size0-rise: 50px !important;
+        --jp-ui-font-size1-rise: 40px !important;
+        --jp-ui-font-size2-rise: 35px !important;
+        --jp-ui-font-size3-rise: 30px !important;
+        --jp-ui-font-size4-rise: 25px !important;
+        --jp-ui-table-font-size-rise: 20px !important;
+        --jp-ui-code-output: 20px !important;
+      }
+    `;
+    document.head.appendChild(style);
 
     const trans = (translator ?? nullTranslator).load('rise');
 
@@ -115,7 +182,8 @@ export const plugin: JupyterFrontEndPlugin<void> = {
           CommandIDs.riseChalkboardClear,
           CommandIDs.riseChalkboardReset,
           CommandIDs.riseChalkboardColorNext,
-          CommandIDs.riseChalkboardColorPrev
+          CommandIDs.riseChalkboardColorPrev,
+          CommandIDs.riseFontSizeCommand
         ].forEach(command => {
           palette.addItem({
             command,
@@ -349,6 +417,7 @@ namespace Rise {
     const reveal_actions: { [id: string]: () => void } = {};
 
     // RISE/reveal.js API calls
+    reveal_actions[CommandIDs.riseFontSizeCommand] = () => openFontSizeMenu;
     reveal_actions[CommandIDs.riseFirstSlide] = () => Reveal.slide(0); // jump to first slide
     reveal_actions[CommandIDs.riseLastSlide] = () =>
       Reveal.slide(Number.MAX_VALUE); // jump to last slide
@@ -855,6 +924,88 @@ namespace Rise {
       );
   }
 
+  // Function to open the Font-Size-Menu
+  function openFontSizeMenu() {
+    const content = document.createElement('div');
+      content.style.display = 'flex';
+      content.style.flexDirection = 'column';
+      
+      // Helper function to get the data needed, to append an entry
+      function getAppendData(label: string, varName: string) {
+        const container = document.createElement('div');
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+        const labelElem = document.createElement('label');
+        labelElem.textContent = label;
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.value = GetStyleValue(varName) || "0";
+        input.min = '8';
+        input.max = '72';
+        input.style.width = '60px';
+        input.style.fontSize = '14px';
+        container.appendChild(labelElem);
+        container.appendChild(input);
+        
+        return {container: container, input: input, label: labelElem, originalVal: input.value}; // Return all the values needed
+      }
+
+      // Build the window
+      const headerSizeData = getAppendData("Header Font Size:", "--jp-ui-font-size0-rise");
+      const codeFontSizeData = getAppendData("Code Font Size:", "--jp-code-font-size");
+      const outputFontSizeData = getAppendData("Output Font Size:", "--jp-ui-code-output");
+      const tableFontSizeData = getAppendData("Table Font Size:", "--jp-ui-table-font-size-rise");
+
+      // Append all values
+      content.appendChild(headerSizeData.label);
+      content.appendChild(headerSizeData.input);
+      content.appendChild(document.createElement('br'));
+      content.appendChild(codeFontSizeData.label);
+      content.appendChild(codeFontSizeData.input);
+      content.appendChild(document.createElement('br'));
+      content.appendChild(outputFontSizeData.label);
+      content.appendChild(outputFontSizeData.input);
+      content.appendChild(document.createElement('br'));
+      content.appendChild(tableFontSizeData.label);
+      content.appendChild(tableFontSizeData.input);
+
+      const contentWidget = new Widget();
+      contentWidget.node.appendChild(content);
+
+      // Show the dialog window
+      const dialog = showDialog({
+        title: 'Font Size Settings',
+        body: contentWidget,
+        buttons: [
+          Dialog.cancelButton(),
+          Dialog.okButton({ label: 'Apply' })
+        ]
+      });
+
+      // Handle result
+      dialog.then(result => {
+        if (result.button.accept) {
+          // Set new values
+          SetStyleValue("--jp-code-font-size", codeFontSizeData.input.value);
+          SetStyleValue("--jp-ui-table-font-size-rise", tableFontSizeData.input.value);
+          SetStyleValue("--jp-ui-code-output", outputFontSizeData.input.value);
+
+          // If header value changed, change the others accordingly
+          if(headerSizeData.input.value !== headerSizeData.originalVal) {
+            const headerSize = headerSizeData.input.value
+            SetStyleValue("--jp-ui-font-size0-rise", headerSizeData.input.value);
+            SetStyleValue("--jp-ui-font-size1-rise", (Number(headerSize) * 0.8).toString());
+            SetStyleValue("--jp-ui-font-size2-rise", (Number(headerSize) * 0.7).toString());
+            SetStyleValue("--jp-ui-font-size3-rise", (Number(headerSize) * 0.6).toString());
+            SetStyleValue("--jp-ui-font-size4-rise", (Number(headerSize) * 0.5).toString());
+          }
+        }
+
+        // Remove the window
+        contentWidget.dispose();
+      });
+  }
+
   function toggleAllRiseButtons() {
     for (const selector of ['#help-b', '#toggle-chalkboard', '#toggle-notes']) {
       const element = document.querySelector(selector) as HTMLElement | null;
@@ -1244,6 +1395,7 @@ namespace Rise {
   } {
     if (Object.keys(reveal_helpstr).length === 0) {
       // RISE/reveal.js API calls
+      reveal_helpstr[CommandIDs.riseFontSizeCommand] = trans.__('set font sizes')
       reveal_helpstr[CommandIDs.riseFirstSlide] = trans.__(
         'jump to first slide'
       );
