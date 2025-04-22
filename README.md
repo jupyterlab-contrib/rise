@@ -42,7 +42,7 @@ To mark a cell as a new slide, sub-slide or fragment, open the property inspecto
 
 <img src="./docs/prop-inspector-slide-type.png" alt="Property inspector slide type" style="width:100%; height:auto;">
 
-Use `Ctrl+R` to render the current notebook as a slidehow:
+Use `Ctrl+R` (or `Option+R` on Mac) to render the current notebook as a slidehow:
 
 <img src="./docs/render-slideshow.png" alt="Rendered slideshow" style="width:100%; height:auto;">
 
