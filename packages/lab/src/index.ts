@@ -1,3 +1,20 @@
+/**
+ * 
+ * Index.ts
+ * 
+ * Purpose:
+ *   - Provides commands, toolbar buttons, and UI integration for Reveal.js
+ *     slideshow presentations inside JupyterLab.
+ *   - Supports theme selection
+ *
+ * Usage:
+ *   - Loads automatically as a JupyterLab extension.
+ *   - Users can open notebooks in RISE mode, apply themes
+ *
+ * Notes:
+ *   - Depends on `ThemePickerDialog` for theme selection.
+ *   - Integrates with notebook metadata to persist RISE settings.
+ */
 import {
   ILayoutRestorer,
   JupyterFrontEnd,
@@ -8,6 +25,7 @@ import {
   CommandToolbarButton,
   ICommandPalette,
   showDialog,
+  Dialog,
   WidgetTracker
 } from '@jupyterlab/apputils';
 
@@ -36,6 +54,12 @@ import { IRisePreviewFactory, IRisePreviewTracker } from './tokens';
 
 export { IRisePreviewFactory, IRisePreviewTracker } from './tokens';
 
+// new class fpr the Theme pcikcer dialog:
+import { ThemePickerDialog } from './ThemePicker';
+
+import { paletteIcon } from '@jupyterlab/ui-components';
+
+import '../style/index.css';
 /**
  * Command IDs namespace for JupyterLab RISE extension
  */
@@ -53,6 +77,12 @@ namespace CommandIDs {
    * Set the slide attribute of a cell
    */
   export const riseSetSlideType = 'RISE:set-slide-type';
+/* set the theme*/ 
+  export const riseSetTheme = 'RISE:set-theme';
+
+  // picks the theme
+export const openThemePicker = 'RISE:theme-picker';
+
 }
 
 const factory: JupyterFrontEndPlugin<IRisePreviewFactory> = {
@@ -334,6 +364,51 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
         )
     });
 
+    /*new theme command*/
+
+  commands.addCommand(CommandIDs.riseSetTheme, {
+  label: args => trans.__('Set Slideshow Theme: %1', args['theme']),
+  execute: args => {
+    const themeName = args['theme'] as string;
+    const current = notebookTracker.currentWidget;
+    if (current && themeName) {
+      const model = current.model;
+      if (model) {
+        
+        const riseMetadata = (model.getMetadata('rise') as any) || {};
+        
+        riseMetadata['theme'] = themeName;
+        model.setMetadata('rise', riseMetadata);
+        
+        
+        showDialog({
+          title: trans.__('Theme Updated'),
+          body: trans.__(`Theme set to "${themeName}". Please save and refresh to apply changes.`),
+          buttons: [Dialog.okButton()]
+        });
+      }
+    }
+    document.body.classList.add('rise-enabled');
+  }
+});
+
+
+// Inside the activate function
+commands.addCommand(CommandIDs.openThemePicker, {
+  label: trans.__('Select RISE Theme'),
+  caption: trans.__('Open a visual dialog to choose a Reveal.js theme'),
+execute: async () => {
+  const current = notebookTracker.currentWidget;
+  if (!current) return;
+
+  await showDialog({ 
+    title: trans.__('Choose a Slideshow Theme'),
+    body: new ThemePickerDialog(trans, notebookTracker), 
+    buttons: [Dialog.okButton({ label: trans.__('Close') })]
+  });
+}
+});
+
     notebookTracker.widgetAdded.connect(
       async (sender: INotebookTracker, panel: NotebookPanel) => {
         panel.toolbar.insertBefore(
@@ -349,6 +424,9 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
         // Don't trigger auto launch in stand-alone Rise application.
         if (app.name !== 'Rise') {
           await panel.context.ready;
+          const riseData = (panel.content.model?.getMetadata('rise') as any) || {};
+          const initialTheme = riseData.theme || 'black';
+        document.body.setAttribute('data-rise-theme', initialTheme);
 
           let autolaunch: boolean =
             (panel.content.model?.getMetadata('rise') ?? {})['autolaunch'] ??
@@ -364,7 +442,22 @@ const plugin: JupyterFrontEndPlugin<IRisePreviewTracker> = {
             });
           }
         }
+        // Include a second Button for in the toolbar for theme:
+panel.toolbar.insertBefore(
+  'kernelName',
+  'RISE-theme-button',
+  new CommandToolbarButton({
+    commands,
+    id: CommandIDs.openThemePicker,
+    icon: paletteIcon, // colorpalette-Icon
+    caption: trans.__('Select RISE Theme') // Tooltip
+  })
+);
+
+
       }
+
+
     );
 
     if (palette) {
