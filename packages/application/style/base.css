@@ -217,7 +217,7 @@
 }
 
 .rise-enabled .jp-OutputArea pre {
-  font-size: 14px;
+  font-size: var(--jp-ui-code-output);
 }
 
 .rise-enabled .jp-OutputPrompt {
@@ -252,25 +252,30 @@
 }
 
 .rise-enabled .jp-RenderedHTMLCommon h1 {
+  font-size: var(--jp-ui-font-size0-rise);
   font-weight: bold;
 }
 
 .rise-enabled .jp-RenderedHTMLCommon h2 {
+  font-size: var(--jp-ui-font-size1-rise);
   font-weight: bold;
 }
 
 .rise-enabled .jp-RenderedHTMLCommon h3 {
+  font-size: var(--jp-ui-font-size2-rise);
   font-weight: bold;
 }
 
 .rise-enabled .jp-RenderedHTMLCommon h4 {
+  font-size: var(--jp-ui-font-size3-rise);
   font-weight: bold;
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 .rise-enabled .jp-RenderedHTMLCommon h5 {
+  font-size: var(--jp-ui-font-size4-rise);
   font-weight: bold;
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 .rise-enabled .CodeMirror {
@@ -404,6 +409,10 @@
 
 .rise-enabled #toggle-notes {
   left: 7em !important;
+}
+
+.rise-enabled .jp-RenderedHTMLCommon table {
+  font-size: var(--jp-ui-table-font-size-rise);
 }
 
 /* fix for reveal dark themes */
