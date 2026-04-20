@@ -1,20 +1,61 @@
-/* this goes with my global default setting
- * that has rise use reveal's theme sky
+/**
+ * rise.css - Custom Styling for RISE Presentations 
+ * 
+ * Purpose:
+ * This stylesheet customizes the appearance of RISEpresentations
+ * when using the "sky" theme. It overrides default Reveal.js styles to improve
+ * readability and visual consistency.
+ * 
+ *  Usage:
+ * 1. Configure RISE to use the "sky" theme in your notebook metadata:
+ *    "rise": {
+ *      "theme": "sky",
+ *      "autolaunch": true
+ *    }
+ * 2. Place this file in the same directory as your .ipynb notebook
+ * 3. Load it in a markdown cell at the top of your notebook:
+ *    <link rel="stylesheet" type="text/css" href="rise.css">
+ * 4. Start RISE presentation mode (Alt+R or via menu)
  */
-/*.reveal {
-    font-family: "Quicksand", sans-serif;
-}*/
 
-.reveal h1,
-.reveal h2,
-.reveal h3,
-.reveal h4,
-.reveal h5,
-.reveal h6 {
-  text-transform: initial; /* sky.css says uppercase */
-  letter-spacing: initial; /* sky.css says -0.08em */
+/*
+/* REVEAL.JS THEME OVERRIDES - Sky Theme Customizations */
+/* 
+
+/**
+ * OPTIONAL: Custom font family for presentations
+ * Uncomment the line below to use Quicksand font
+ * Make sure the font is available or imported
+ */
+/*
+.reveal {
+    font-family: "Quicksand", sans-serif;
+}
+*/
+
+/**
+ * Heading styling overrides
+ * The sky theme applies uppercase and negative letter-spacing by default
+ * This resets headings to normal capitalization and spacing
+ */
+body.rise-enabled.reveal h1,
+body.rise-enabled.reveal h2,
+body.rise-enabled.reveal h3,
+body.rise-enabled.reveal h4,
+body.rise-enabled.reveal h5,
+body.rise-enabled.reveal h6 {
+  text-transform: initial; /* Remove uppercase from sky.css */
+  letter-spacing: initial; /* Remove tight spacing from sky.css */
 }
 
+/*
+/* LIST SPACING */
+/* 
+
+/**
+ * Adjust list margins for better readability in presentations
+ * Applied only when RISE is active (body.rise-enabled)
+ */
 body.rise-enabled .reveal ol,
 body.rise-enabled .reveal dl,
 body.rise-enabled .reveal ul {
@@ -22,6 +63,14 @@ body.rise-enabled .reveal ul {
   margin-top: 0.2em;
 }
 
+/*
+/* HEADING SPACING */
+/* 
+
+/**
+ * Reduce top margin for first headings in rendered markdown
+ * Prevents excessive whitespace at the top of slides
+ */
 .reveal .rendered_html h1:first-child,
 .reveal .rendered_html h2:first-child,
 .reveal .rendered_html h3:first-child,
@@ -30,6 +79,15 @@ body.rise-enabled .reveal ul {
   margin-top: 0.2em;
 }
 
+/* 
+/* PLAN/OUTLINE SLIDE STYLES */
+/* Custom styles for agenda/outline slides */
+/*
+
+/**
+ * Center-aligned headings with bottom padding for plan slides
+ * Usage: <h1 class="plan">Agenda</h1>
+ */
 h1.plan,
 h2.plan,
 h3.plan {
@@ -37,6 +95,10 @@ h3.plan {
   padding-bottom: 30px;
 }
 
+/**
+ * Emphasized list items in plan slides
+ * Usage: <li><span class="plan-bold">Topic</span></li>
+ */
 ul.plan > li > span.plan-bold {
   font-size: 110%;
   padding: 4px;
@@ -44,39 +106,62 @@ ul.plan > li > span.plan-bold {
   background-color: #eee;
 }
 
+/**
+ * Bold styling for sub-items in plan lists
+ */
 ul.plan > li > ul.subplan > li > span.plan-bold {
   font-weight: bold;
 }
 
+/**
+ * Styling for completed/struck-through items
+ * Usage: <span class="plan-strike">Completed item</span>
+ */
 .plan-strike {
   opacity: 0.4;
-  /*    text-decoration: line-through; */
+  /* Uncomment for strike-through effect: */
+  /* text-decoration: line-through; */
 }
 
+/**
+ * Two-column grid layout for plan content
+ * Usage: <div class="plan-container">...</div>
+ */
 div.plan-container {
   display: grid;
   grid-template-columns: 50% 50%;
-}
-
-/* something big and obvious again just to outline
-   that this file is actually loaded */
-
-div.cell.code_cell.rendered,
-div.input_area {
-  border-width: 10px;
-}
-
-/* this is only to check that rise.css properly gets
- * ignored when quitting reveal mode */
-div.text_cell_render.rendered_html {
-  color: #5050b0;
+  gap: 20px;
 }
 
 /*
- * this is to void xarray's html output to show the fallback textual representation
- * see also
-   * xarray.md and 
-   * https://github.com/damianavila/RISE/issues/594
+/* VISUAL DEBUG HELPER */
+/* 
+
+/**
+ * Thick borders on code cells for visual debugging
+ * Makes it obvious when this CSS file is loaded
+ * You can reduce or remove this after confirming the CSS works
+ */
+div.cell.code_cell.rendered,
+div.input_area {
+  border-width: 10px;
+  border-color: #d0d0d0;
+  border-style: solid;
+}
+
+/* For sample code cell in README and showflow:*/
+body.rise-enabled .reveal section .rise {
+  background-color: #20b2aa;
+}
+
+/* 
+/* XARRAY COMPATIBILITY */
+/* 
+
+/**
+ * Hide xarray's fallback text representation in presentations
+ * xarray displays both HTML and text versions; we only want HTML
+ * See: https://github.com/damianavila/RISE/issues/594
  */
 .reveal pre.xr-text-repr-fallback {
   display: none;

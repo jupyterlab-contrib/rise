@@ -1,12 +1,25 @@
-/* when setting overlay,
- * (see metadata in notebook)
+/**
+ * RISE Custom Overlay Example
  *
  * it's your responsability to put all the pieces where you want
  * even in the middle if that was what you wanted
+ * Purpose:
+ * - Demonstrates custom overlay elements positioning
+ * - Shows how to create custom header/footer classes
+ * - Illustrates absolute positioning techniques
  *
+ * Usage:
+ * 1. Configure notebook metadata with custom classes:
+ *    {
+ *      "rise": {
+ *        "overlay": "<div class='myheader'>Header</div> and <div class='myfooter'>Footer</div>"
+ *      }
+ *    }
  */
 
-div.myheader {
+/* Custom header with blue background */
+
+body.rise-enabled .reveal section.with-header .myheader {
   position: absolute;
   margin: 30px;
   left: 8%;
@@ -14,9 +27,18 @@ div.myheader {
   font-size: xx-large;
 }
 
-div.myfooter {
+/* Custom header with red background */
+body.rise-enabled .reveal section.with-footer.with-footer .myfooter {
   position: absolute;
   background: red;
   font-size: 120%;
   right: 10%;
 }
+
+
+/**
+* Debugging
+* body.rise-enabled .reveal .slides section {
+* background-color: #FFE5B4;
+* }
+*/

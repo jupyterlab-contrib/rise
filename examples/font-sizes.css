@@ -1,21 +1,48 @@
-/* an example to illustrate how to tweak font sizes */
+/**
+ * RISE Font Size Customization Example
+ *
+ * Purpose:
+*- Set a global base font size for slides
+*- Adjust spacing and font size of code blocks
+*- Customize slide background appearance
+ *
+ * Usage:
+ * 1. Place this file in: rise/examples/styles/font-sizes.css
+ * 2. Adjust the font-size percentage values as needed
+ * 3. Changes will apply when RISE presentation mode is active
+ **/
 
-/* to apply a setting only when under RISE, 
-   be aware that the <body> tag has class .rise-enabled */
+/*Note: The body.rise-enabled class ensures styles only apply in presentation mode*/
 
-/* ---------- markdown cells
- */
-body.rise-enabled div.inner_cell > div.text_cell_render.rendered_html {
-  font-size: 80%;
+/**
+* Debugging
+* body.rise-enabled .reveal .slides section {
+*  background-color: #FFA500;
+* }
+*/
+
+/* Markdown text:Font size for regular text in markdown cells  */
+
+body.rise-enabled {
+  --rise-base-font-size: 80%;
+}
+
+body.rise-enabled .reveal .slides section {
+  font-size: var(--rise-base-font-size);
 }
 
 /* ---------- code blocks inside markdown
    i.e. within ``` lines, or 4-space indented
  */
-div.inner_cell > div.text_cell_render.rendered_html > pre {
-  margin: 0px;
+
+/* ----------  code blocks inside markdown cells*/
+body.rise-enabled .reveal pre {
+  margin: 0.2em 0;
 }
 
-div.inner_cell > div.text_cell_render.rendered_html > pre > code {
+/* ---------- Inline-Code: Font size for code within markdown cells */
+body.rise-enabled .reveal pre code {
   font-size: 70%;
+  line-height: 1.3;
+  color: red;
 }
