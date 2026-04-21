@@ -457,3 +457,144 @@ body.rise-enabled.theme-moon div.jp-RenderedHTMLCommon,
 body.rise-enabled.theme-moon div.jp-MarkdownCell.jp-mod-rendered {
   color: #eee8d5;
 }
+
+/* Chalkboard Color Palette Customizations */
+/* Override default palette positioning - move to top center horizontally */
+.rise-enabled div.palette {
+  position: absolute !important;
+  top: 10px !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  font-size: 24px;
+  border-radius: 10px;
+  border: 4px solid #222;
+  background: rgba(0, 0, 0, 0.85) !important;
+  padding: 10px 20px;
+  transition: all 0.3s;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 15px;
+  z-index: 100;
+}
+
+/* Hint text styling */
+.rise-enabled div.palette .palette-hint {
+  color: #fff;
+  font-size: 14px;
+  margin-right: 10px;
+  white-space: nowrap;
+  font-family: Arial, sans-serif;
+}
+
+.rise-enabled div.palette .palette-hint kbd {
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+/* Horizontal color list */
+.rise-enabled div.palette > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 8px;
+}
+
+.rise-enabled div.palette > ul > li {
+  margin: 0 !important;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 4px;
+  border-radius: 5px;
+  border: 3px solid transparent;
+}
+
+/* Active color highlighting */
+.rise-enabled div.palette > ul > li.active {
+  border-color: #ffd700 !important;
+  background: rgba(255, 215, 0, 0.2) !important;
+  transform: scale(1.2);
+}
+
+.rise-enabled div.palette > ul > li:hover {
+  transform: scale(1.15);
+  opacity: 0.8;
+}
+
+/* Chalkboard cursor images - override plugin paths to use RISE bundled images */
+.rise-enabled #notescanvas {
+  cursor: url(./img/boardmarker-black.png), auto !important;
+}
+
+.rise-enabled #chalkboard {
+  cursor: url(./img/chalk-white.png), auto !important;
+}
+
+/* Override specific color cursors when they are set */
+.rise-enabled [style*="boardmarker-black.png"] {
+  cursor: url(./img/boardmarker-black.png), auto !important;
+}
+
+.rise-enabled [style*="boardmarker-blue.png"] {
+  cursor: url(./img/boardmarker-blue.png), auto !important;
+}
+
+.rise-enabled [style*="boardmarker-red.png"] {
+  cursor: url(./img/boardmarker-red.png), auto !important;
+}
+
+.rise-enabled [style*="boardmarker-green.png"] {
+  cursor: url(./img/boardmarker-green.png), auto !important;
+}
+
+.rise-enabled [style*="boardmarker-orange.png"] {
+  cursor: url(./img/boardmarker-orange.png), auto !important;
+}
+
+.rise-enabled [style*="boardmarker-purple.png"] {
+  cursor: url(./img/boardmarker-purple.png), auto !important;
+}
+
+.rise-enabled [style*="boardmarker-yellow.png"] {
+  cursor: url(./img/boardmarker-yellow.png), auto !important;
+}
+
+.rise-enabled [style*="chalk-white.png"] {
+  cursor: url(./img/chalk-white.png), auto !important;
+}
+
+.rise-enabled [style*="chalk-blue.png"] {
+  cursor: url(./img/chalk-blue.png), auto !important;
+}
+
+.rise-enabled [style*="chalk-red.png"] {
+  cursor: url(./img/chalk-red.png), auto !important;
+}
+
+.rise-enabled [style*="chalk-green.png"] {
+  cursor: url(./img/chalk-green.png), auto !important;
+}
+
+.rise-enabled [style*="chalk-orange.png"] {
+  cursor: url(./img/chalk-orange.png), auto !important;
+}
+
+.rise-enabled [style*="chalk-purple.png"] {
+  cursor: url(./img/chalk-purple.png), auto !important;
+}
+
+.rise-enabled [style*="chalk-yellow.png"] {
+  cursor: url(./img/chalk-yellow.png), auto !important;
+}
+
+.rise-enabled [style*="sponge.png"] {
+  cursor: url(./img/sponge.png), auto !important;
+}

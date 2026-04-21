@@ -1063,11 +1063,125 @@ namespace Rise {
       isRevealInitialized = true;
     }
 
+    // Customize chalkboard palettes after initialization
+    function customizeChalkboardPalette() {
+      // Find both palettes (notes canvas and chalkboard)
+      const palettes = document.querySelectorAll('.palette');
+
+      palettes.forEach((palette: Element) => {
+        // Check if hint text already added
+        if (palette.querySelector('.palette-hint')) {
+          return;
+        }
+
+        // Add hint text at the beginning
+        const hint = document.createElement('div');
+        hint.classList.add('palette-hint');
+        hint.innerHTML = 'Press <kbd>Q</kbd>/<kbd>S</kbd> to change color';
+
+        // Insert hint before the ul element
+        const ul = palette.querySelector('ul');
+        if (ul) {
+          palette.insertBefore(hint, ul);
+        }
+
+        // Mark first color as active
+        const firstColorButton = palette.querySelector('li[data-color="0"]');
+        if (firstColorButton) {
+          firstColorButton.classList.add('active');
+        }
+      });
+    }
+
+    // Function to update active color highlighting
+    function updatePaletteHighlight(paletteElement: Element, activeColorIndex: number) {
+      const colorButtons = paletteElement.querySelectorAll('li[data-color]');
+      colorButtons.forEach((button: Element) => {
+        const buttonColorIndex = parseInt(button.getAttribute('data-color') || '0');
+        if (buttonColorIndex === activeColorIndex) {
+          button.classList.add('active');
+        } else {
+          button.classList.remove('active');
+        }
+      });
+    }
+
+    // Override chalkboard color functions to update highlighting
+    if (enable_chalkboard && (window as any).RevealChalkboard) {
+      const chalkboard = (window as any).RevealChalkboard;
+
+      // Store original functions
+      const originalColorIndex = chalkboard.colorIndex;
+      const originalColorNext = chalkboard.colorNext;
+      const originalColorPrev = chalkboard.colorPrev;
+
+      // Override colorIndex to update highlighting
+      chalkboard.colorIndex = function(idx?: number) {
+        if (originalColorIndex) {
+          originalColorIndex.call(this, idx);
+        }
+
+        // Update highlighting after color change
+        setTimeout(() => {
+          const palettes = document.querySelectorAll('.palette');
+          palettes.forEach((palette: Element) => {
+            // Get current color from chalkboard (this is a simplified approach)
+            updatePaletteHighlight(palette, idx || 0);
+          });
+        }, 10);
+      };
+
+      // Override colorNext
+      chalkboard.colorNext = function() {
+        if (originalColorNext) {
+          originalColorNext.call(this);
+        }
+
+        setTimeout(() => {
+          const palettes = document.querySelectorAll('.palette');
+          palettes.forEach((palette: Element) => {
+            const activeButton = palette.querySelector('li.active');
+            if (activeButton) {
+              const currentIndex = parseInt(activeButton.getAttribute('data-color') || '0');
+              const colorButtons = palette.querySelectorAll('li[data-color]');
+              const nextIndex = (currentIndex + 1) % colorButtons.length;
+              updatePaletteHighlight(palette, nextIndex);
+            }
+          });
+        }, 10);
+      };
+
+      // Override colorPrev
+      chalkboard.colorPrev = function() {
+        if (originalColorPrev) {
+          originalColorPrev.call(this);
+        }
+
+        setTimeout(() => {
+          const palettes = document.querySelectorAll('.palette');
+          palettes.forEach((palette: Element) => {
+            const activeButton = palette.querySelector('li.active');
+            if (activeButton) {
+              const currentIndex = parseInt(activeButton.getAttribute('data-color') || '0');
+              const colorButtons = palette.querySelectorAll('li[data-color]');
+              const prevIndex = currentIndex === 0 ? colorButtons.length - 1 : currentIndex - 1;
+              updatePaletteHighlight(palette, prevIndex);
+            }
+          });
+        }, 10);
+      };
+    }
+
     Reveal.addEventListener('ready', event => {
       Unselecter(panel.content);
       // check and set the scrolling slide when you start the whole thing
       setScrollingSlide();
       autoSelectHook(panel.content);
+
+      // Customize chalkboard palette after reveal is ready
+      if (enable_chalkboard) {
+        setTimeout(customizeChalkboardPalette, 500);
+      }
     });
 
     Reveal.addEventListener('slidechanged', event => {
