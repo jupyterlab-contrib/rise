@@ -1,13 +1,42 @@
 /*
- * this is loaded together with README.ipynb
- * because it's named the same with css extension
+* README.css
+ *
+ * Purpose:
+ * This stylesheet provides presentation-specific styling for RISE slides
+ * in README.ipynb. All rules are scoped to `body.rise-enabled` so they apply
+ * only in Reveal.js presentation mode.
+ *
+ * Note:
+ * This file must be explicitly loaded (e.g. via <style>@import</style> or
+ * notebook metadata). It is NOT auto-loaded based on filename.
  */
-
-/* not very useful, but an OBVIOUS setting that you cannot miss */
-div.cell.code_cell.rendered {
+/* provide a slightly round the bottom corners of rendered code cells */
+body.rise-enabled .reveal section .cell.code_cell.rendered {
   border-radius: 0px 0px 30px 0px;
 }
 
-div.input_area {
+body.rise-enabled .reveal section .input_area {
   border-radius: 0px 0px 25px 0px;
+}
+/*Slide-specific background image via trigger element: */
+
+/* Any slide (<section>) that contains an element with
+   class `.custom-bg-trigger` will receive a background
+   image. This allows per-slide backgrounds without
+   modifying slide metadata. */
+body.rise-enabled .reveal .slides section:has(.backimage) {
+  background-image: url('mybackimage.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+/*  Text color adjustments for background-image slides. */
+body.rise-enabled .reveal .slides section:has(.backimage) h1,
+body.rise-enabled .reveal .slides section:has(.backimage) h2,
+body.rise-enabled .reveal .slides section:has(.backimage) h3,
+body.rise-enabled .reveal .slides section:has(.backimage) p,
+body.rise-enabled .reveal .slides section:has(.backimage) li,
+body.rise-enabled .reveal .slides section:has(.backimage) span {
+  color: #ffffff !important;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 1) !important;
 }

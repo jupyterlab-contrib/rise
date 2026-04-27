@@ -1,1 +1,142 @@
-@import url('base.css');
+/** Index.css
+* Base styles shared across the extension.
+*
+*
+*Purpose:
+*  - Layout and interaction styles for the ThemePickerDialog
+*   - Displays available Reveal.js themes in a responsive grids. 
+*/
+
+
+/* define the color global based on the attributes of the body or fullscreen elements */
+
+:root {
+/* light themes */
+    --rise-bg-white: #ffffff;
+    --rise-bg-simple: #ffffff;
+    --rise-bg-sky: #f7fbfc;
+    --rise-bg-beige: #f7f2d3;
+    --rise-bg-solarized: #fdf6e3;
+    --rise-bg-serif: #f0f1eb;
+
+    /* dark themes */
+    --rise-bg-black: #191919;
+    --rise-bg-night: #111111;
+    --rise-bg-moon: #002b36;
+    --rise-bg-blood: #222222;
+    --rise-bg-league: #2b2b2b;
+   /* --rise-bg-dracula: #282a36;*/
+
+}
+
+/* Set jupyter lab transparent for visibility of the theme background */
+body.rise-enabled .lm-Widget,
+body.rise-enabled .jp-Notebook,
+body.rise-enabled .jp-Cell {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Set the help dialog when theme is active white*/
+.jp-Dialog .jp-Dialog-content,
+div.jp-Dialog-content.lm-Widget, 
+.font-size-dialog-container,
+.rise-help-dialog-container {
+    background: white !important;
+    background-color: white !important;
+    opacity: 1 !important;
+    color: #333 !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+}
+
+
+/* Styling for lists in help-dialog */
+.rise-help-dialog-container ul {
+    list-style-type: disc !important;
+    padding-left: 25px !important;
+    color: #333 !important;
+}
+
+/* Set font size dialog white */
+.font-size-dialog-container div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+/* Stops transparent side effect in righ-click menu*/
+.lm-Widget.lm-Menu,
+.lm-Widget.lm-Menu.lm-Widget {
+    background-color: #ffffff !important; /* white background  */
+    color: #333333 !important;           /* dark text */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* repair the Hover effect in menu */
+.lm-Menu-item.lm-mod-active {
+    background-color: #e0e0e0 !important;
+}
+
+/* color of of the Shortcut text in menu */
+.lm-Menu-itemShortcut {
+    color: #666666 !important;
+}
+
+
+/*Select themes their background-color */
+body[data-rise-theme='black'] { background-color: var(--rise-bg-black) !important; }
+body[data-rise-theme='white'] { background-color: var(--rise-bg-white) !important; }
+body[data-rise-theme='simple'] { background-color: var(--rise-bg-simple) !important; }
+body[data-rise-theme='sky'] { background-color: var(--rise-bg-sky) !important; }
+body[data-rise-theme='beige'] { background-color: var(--rise-bg-beige) !important; }
+body[data-rise-theme='blood'] { background-color: var(--rise-bg-blood) !important; }
+body[data-rise-theme='night'] { background-color: var(--rise-bg-night) !important; }
+body[data-rise-theme='moon'] { background-color: var(--rise-bg-moon) !important; }
+body[data-rise-theme='league'] { background-color: var(--rise-bg-league) !important; }
+/*body[data-rise-theme='dracula'] { background-color: var(--rise-bg-dracula) !important; }*/
+body[data-rise-theme='solarized'] { background-color: var(--rise-bg-solarized) !important; }
+body[data-rise-theme='serif'] { background-color: var(--rise-bg-serif) !important; }
+
+
+
+/* Set reveal element transparent */
+.reveal, 
+.reveal .slides, 
+.reveal .slides section,
+iframe.rise-Preview-iframe {
+    background-color: transparent !important;
+}
+
+/*Set element in fullscreen into his backgroundcolor based on their body*/
+
+:fullscreen, :-webkit-full-screen {
+    background-color: inherit !important; 
+}
+
+/* Otherwise set the background black*/
+::backdrop {
+    background-color: inherit !important;
+}
+
+/* Theme Picker UI  */
+
+
+.rise-ThemePicker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.rise-ThemePicker-item {
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.rise-ThemePicker-item:hover {
+  transform: scale(1.05);
+}
+

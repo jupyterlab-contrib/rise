@@ -1,0 +1,41 @@
+/* THEME FIX for JupyterLab/RISE 
+    Theme source: https://revealjs.com/themes/
+
+ Purpose:
+  This ensures that the chosen theme background is visible 
+  by making the JupyterLab interface layers transparent.
+
+ Usage:
+    Include this CSS file in your notebook.
+* Note:
+ * This file must be explicitly loaded (e.g. via <style>@import</style> or
+ * notebook metadata). It is NOT auto-loaded based on filename.
+*/
+
+/* Reset JupyterLab's layout variables to allow transparency */
+body.rise-enabled {
+    --jp-layout-color0: transparent !important;
+    --jp-layout-color1: transparent !important;
+    --jp-layout-color2: transparent !important;
+    --jp-paper-color: transparent !important;
+    --jp-content-font-color1: inherit; /* Allow theme to control text color */
+}
+
+/*  Make all container layers transparent */
+body.rise-enabled #jp-main-content-panel,
+body.rise-enabled .jp-Notebook,
+body.rise-enabled .jp-Cell,
+body.rise-enabled .jp-InputArea-editor,
+body.rise-enabled .jp-Editor,
+body.rise-enabled .reveal-viewport,
+body.rise-enabled .reveal,
+body.rise-enabled .reveal .slides,
+body.rise-enabled .reveal .slides section {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+/*  Clean up UI distractions for a professional look */
+body.rise-enabled .jp-Cell.jp-mod-selected {
+    border-left: none !important; /* Removes the blue active-cell bar */
+}

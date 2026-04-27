@@ -45,8 +45,118 @@ namespace CommandIDs {
   export const riseChalkboardColorNext = 'RISE:chalkboard-colorNext';
   export const riseChalkboardDownload = 'RISE:chalkboard-download';
   export const riseNotesOpen = 'RISE:notes-open';
+  export const riseFontSizeCommand = 'RISE:change-font-size';
 
   export const riseShowConfig = 'RISE:show-configuration';
+}
+
+const style = document.createElement('style');
+
+// LocalStorage key for persisting font size settings
+const FONT_SIZE_STORAGE_KEY = 'rise-font-size-settings';
+
+// Interface for font size settings
+interface FontSizeSettings {
+  codeFontSize: string;
+  headerFontSize: string;
+  outputFontSize: string;
+  tableFontSize: string;
+}
+
+// Default font size values
+const DEFAULT_FONT_SIZES: FontSizeSettings = {
+  codeFontSize: '20',
+  headerFontSize: '50',
+  outputFontSize: '20',
+  tableFontSize: '20'
+};
+
+/**
+ * Save font size settings to localStorage
+ */
+function saveFontSizeSettings(settings: FontSizeSettings): void {
+  try {
+    localStorage.setItem(FONT_SIZE_STORAGE_KEY, JSON.stringify(settings));
+    console.log('Font size settings saved:', settings);
+  } catch (error) {
+    console.error('Failed to save font size settings:', error);
+  }
+}
+
+/**
+ * Load font size settings from localStorage
+ * Returns default values if no saved settings exist
+ */
+function loadFontSizeSettings(): FontSizeSettings {
+  try {
+    const saved = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
+    if (saved) {
+      const settings = JSON.parse(saved) as FontSizeSettings;
+      console.log('Font size settings loaded:', settings);
+      return settings;
+    }
+  } catch (error) {
+    console.error('Failed to load font size settings:', error);
+  }
+  console.log('Using default font size settings');
+  return { ...DEFAULT_FONT_SIZES };
+}
+
+/**
+ * Apply font size settings to the style element
+ */
+function applyFontSizeSettings(settings: FontSizeSettings): void {
+  SetStyleValue('--jp-code-font-size', settings.codeFontSize);
+  SetStyleValue('--jp-ui-font-size0-rise', settings.headerFontSize);
+  SetStyleValue('--jp-ui-font-size1-rise', (Number(settings.headerFontSize) * 0.8).toString());
+  SetStyleValue('--jp-ui-font-size2-rise', (Number(settings.headerFontSize) * 0.7).toString());
+  SetStyleValue('--jp-ui-font-size3-rise', (Number(settings.headerFontSize) * 0.6).toString());
+  SetStyleValue('--jp-ui-font-size4-rise', (Number(settings.headerFontSize) * 0.5).toString());
+  SetStyleValue('--jp-ui-code-output', settings.outputFontSize);
+  SetStyleValue('--jp-ui-table-font-size-rise', settings.tableFontSize);
+}
+
+function SetStyleValue(type:string, newValue:string) {
+  const text = style.textContent?.replace(":root {", "")?.replace("}", "")?.replace("\n", "")?.split(";");
+
+  if(text == undefined) return;
+
+  let result = ":root {\n";
+
+  for (let i = 0; i < text?.length; i++) {
+    let styleRule = text[i]?.trim();
+
+    if(!styleRule.startsWith(type)) {
+      result += styleRule;
+      if (i < text.length - 1) {
+        result += ";";
+      }
+      continue;
+    }
+
+    result += type + ": " + newValue + "px !important;";
+  }
+  result += "}";
+
+  style.textContent = result;
+}
+
+function GetStyleValue(type:string) {
+  const text = style.textContent?.replace(":root {", "")?.replace("}", "")?.split(";");
+
+  if(text == undefined) return "10";
+
+  for (let i = 0; i < text?.length; i++) {
+    let styleRule = text[i]?.trim();
+
+    if(!styleRule.startsWith(type)) continue;
+
+    styleRule = styleRule.replace(type + ": ", "");
+    styleRule = styleRule.replace("px !important", "");
+
+    return styleRule;
+  }
+  return "10";
 }
 
 /**
@@ -67,6 +177,25 @@ export const plugin: JupyterFrontEndPlugin<void> = {
   ) => {
     // Uncomment in dev mode to send logs to the parent window
     //Private.setupLog();
+
+    // Initialize style element with default values
+    style.textContent = `
+      :root {
+        --jp-code-font-size: 20px !important;
+        --jp-ui-font-size0-rise: 50px !important;
+        --jp-ui-font-size1-rise: 40px !important;
+        --jp-ui-font-size2-rise: 35px !important;
+        --jp-ui-font-size3-rise: 30px !important;
+        --jp-ui-font-size4-rise: 25px !important;
+        --jp-ui-table-font-size-rise: 20px !important;
+        --jp-ui-code-output: 20px !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Load and apply saved font size settings from localStorage
+    const savedSettings = loadFontSizeSettings();
+    applyFontSizeSettings(savedSettings);
 
     const trans = (translator ?? nullTranslator).load('rise');
 
@@ -115,7 +244,8 @@ export const plugin: JupyterFrontEndPlugin<void> = {
           CommandIDs.riseChalkboardClear,
           CommandIDs.riseChalkboardReset,
           CommandIDs.riseChalkboardColorNext,
-          CommandIDs.riseChalkboardColorPrev
+          CommandIDs.riseChalkboardColorPrev,
+          CommandIDs.riseFontSizeCommand
         ].forEach(command => {
           palette.addItem({
             command,
@@ -349,6 +479,7 @@ namespace Rise {
     const reveal_actions: { [id: string]: () => void } = {};
 
     // RISE/reveal.js API calls
+    reveal_actions[CommandIDs.riseFontSizeCommand] = () => openFontSizeMenu(); //!!!
     reveal_actions[CommandIDs.riseFirstSlide] = () => Reveal.slide(0); // jump to first slide
     reveal_actions[CommandIDs.riseLastSlide] = () =>
       Reveal.slide(Number.MAX_VALUE); // jump to last slide
@@ -855,6 +986,96 @@ namespace Rise {
       );
   }
 
+  function openFontSizeMenu() {
+    const content = document.createElement('div');
+      content.style.display = 'flex';
+      content.style.flexDirection = 'column';
+
+      function GetAppendData(label: string, varName: string) {
+        const container = document.createElement('div');
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+        const labelElem = document.createElement('label');
+        labelElem.textContent = label;
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.value = GetStyleValue(varName) || "0";
+        input.min = '8';
+        input.max = '72';
+        input.style.width = '60px';
+        input.style.fontSize = '14px';
+        container.appendChild(labelElem);
+        container.appendChild(input);
+
+        return {container: container, input: input, label: labelElem, originalVal: input.value};
+      }
+
+      const headerSizeData = GetAppendData("Header Font Size:", "--jp-ui-font-size0-rise");
+      const codeFontSizeData = GetAppendData("Code Font Size:", "--jp-code-font-size");
+      const outputFontSizeData = GetAppendData("Output Font Size:", "--jp-ui-code-output");
+      const tableFontSizeData = GetAppendData("Table Font Size:", "--jp-ui-table-font-size-rise");
+
+      content.appendChild(headerSizeData.label);
+      content.appendChild(headerSizeData.input);
+      content.appendChild(document.createElement('br'));
+      content.appendChild(codeFontSizeData.label);
+      content.appendChild(codeFontSizeData.input);
+      content.appendChild(document.createElement('br'));
+      content.appendChild(outputFontSizeData.label);
+      content.appendChild(outputFontSizeData.input);
+      content.appendChild(document.createElement('br'));
+      content.appendChild(tableFontSizeData.label);
+      content.appendChild(tableFontSizeData.input);
+
+      const contentWidget = new Widget();
+      contentWidget.node.appendChild(content);
+
+      const dialog = showDialog({
+        title: 'Font Size Settings',
+        body: contentWidget,
+        buttons: [
+          Dialog.cancelButton(),
+          Dialog.createButton({ label: 'Reset to Defaults' }),
+          Dialog.okButton({ label: 'Apply' })
+        ],
+        host: document.querySelector('.reveal') as HTMLElement
+      });
+
+      dialog.then(result => {
+        if (result.button.label === 'Reset to Defaults') {
+          // Reset to default values
+          applyFontSizeSettings(DEFAULT_FONT_SIZES);
+          saveFontSizeSettings(DEFAULT_FONT_SIZES);
+          console.log('Font size settings reset to defaults');
+        } else if (result.button.accept) {
+          // Apply user-selected values
+          SetStyleValue("--jp-code-font-size", codeFontSizeData.input.value);
+          SetStyleValue("--jp-ui-table-font-size-rise", tableFontSizeData.input.value);
+          SetStyleValue("--jp-ui-code-output", outputFontSizeData.input.value);
+
+          if(headerSizeData.input.value != headerSizeData.originalVal) {
+            const headerSize = headerSizeData.input.value
+            SetStyleValue("--jp-ui-font-size0-rise", headerSizeData.input.value);
+            SetStyleValue("--jp-ui-font-size1-rise", (Number(headerSize) * 0.8).toString());
+            SetStyleValue("--jp-ui-font-size2-rise", (Number(headerSize) * 0.7).toString());
+            SetStyleValue("--jp-ui-font-size3-rise", (Number(headerSize) * 0.6).toString());
+            SetStyleValue("--jp-ui-font-size4-rise", (Number(headerSize) * 0.5).toString());
+          }
+
+          // Save settings to localStorage for persistence
+          const newSettings: FontSizeSettings = {
+            codeFontSize: codeFontSizeData.input.value,
+            headerFontSize: headerSizeData.input.value,
+            outputFontSize: outputFontSizeData.input.value,
+            tableFontSize: tableFontSizeData.input.value
+          };
+          saveFontSizeSettings(newSettings);
+        }
+
+        contentWidget.dispose();
+      });
+  }
+
   function toggleAllRiseButtons() {
     for (const selector of ['#help-b', '#toggle-chalkboard', '#toggle-notes']) {
       const element = document.querySelector(selector) as HTMLElement | null;
@@ -876,10 +1097,12 @@ namespace Rise {
   }
 
   let isRevealInitialized = false;
-
+//
   async function Revealer(
     panel: NotebookPanel,
-    selected_slide: [number, number]
+    selected_slide: [number, number],
+    commands: CommandRegistry,
+    trans: TranslationBundle
   ): Promise<void> {
     document.body.classList.add('rise-enabled');
 
@@ -988,7 +1211,8 @@ namespace Rise {
         36: null, // Home - first slide disabled (will be set in custom keys)
         38: null, // up arrow disabled
         40: null, // down arrow disabled
-        66: null, // b, black pause disabled, use period or forward slash
+        66: null, // b, black pause disabled, use period or forward slash -> using b event now
+        68: null, // d, scancode disabled, now used manually for downloading chalkboard
         70: null, // disable fullscreen inside the slideshow, makes codemirror unreliable
         72: null, // h, left disabled
         74: null, // j, down disabled
@@ -999,10 +1223,21 @@ namespace Rise {
         80: null, // p, up disabled
         84: null, // t, modified in the custom notes plugin.
         87: null, // w, toggle overview
-        // is it ok?
-        188: toggleAllRiseButtons // comma, hard-wired to toggleAllRiseButtons
-      },
-      plugins: []
+        188: toggleAllRiseButtons, // comma, hard-wired to toggleAllRiseButtons
+        67: (event: KeyboardEvent) => { // Shift+C for help menu
+            if (event.shiftKey) {
+              event.preventDefault();
+              openFontSizeMenu();
+            }
+          },
+        //191: (event: KeyboardEvent) => { // Shift+/ (= ?)
+            //if (event.shiftKey) {
+              //event.preventDefault();
+              //displayRiseHelp(commands, trans);
+            //}
+        //}
+        },
+        plugins: []
     };
 
     // Import notes plugin
@@ -1063,11 +1298,125 @@ namespace Rise {
       isRevealInitialized = true;
     }
 
+    // Customize chalkboard palettes after initialization
+    function customizeChalkboardPalette() {
+      // Find both palettes (notes canvas and chalkboard)
+      const palettes = document.querySelectorAll('.palette');
+
+      palettes.forEach((palette: Element) => {
+        // Check if hint text already added
+        if (palette.querySelector('.palette-hint')) {
+          return;
+        }
+
+        // Add hint text at the beginning
+        const hint = document.createElement('div');
+        hint.classList.add('palette-hint');
+        hint.innerHTML = 'Press <kbd>Q</kbd>/<kbd>S</kbd> to change color';
+
+        // Insert hint before the ul element
+        const ul = palette.querySelector('ul');
+        if (ul) {
+          palette.insertBefore(hint, ul);
+        }
+
+        // Mark first color as active
+        const firstColorButton = palette.querySelector('li[data-color="0"]');
+        if (firstColorButton) {
+          firstColorButton.classList.add('active');
+        }
+      });
+    }
+
+    // Function to update active color highlighting
+    function updatePaletteHighlight(paletteElement: Element, activeColorIndex: number) {
+      const colorButtons = paletteElement.querySelectorAll('li[data-color]');
+      colorButtons.forEach((button: Element) => {
+        const buttonColorIndex = parseInt(button.getAttribute('data-color') || '0');
+        if (buttonColorIndex === activeColorIndex) {
+          button.classList.add('active');
+        } else {
+          button.classList.remove('active');
+        }
+      });
+    }
+
+    // Override chalkboard color functions to update highlighting
+    if (enable_chalkboard && (window as any).RevealChalkboard) {
+      const chalkboard = (window as any).RevealChalkboard;
+
+      // Store original functions
+      const originalColorIndex = chalkboard.colorIndex;
+      const originalColorNext = chalkboard.colorNext;
+      const originalColorPrev = chalkboard.colorPrev;
+
+      // Override colorIndex to update highlighting
+      chalkboard.colorIndex = function(idx?: number) {
+        if (originalColorIndex) {
+          originalColorIndex.call(this, idx);
+        }
+
+        // Update highlighting after color change
+        setTimeout(() => {
+          const palettes = document.querySelectorAll('.palette');
+          palettes.forEach((palette: Element) => {
+            // Get current color from chalkboard (this is a simplified approach)
+            updatePaletteHighlight(palette, idx || 0);
+          });
+        }, 10);
+      };
+
+      // Override colorNext
+      chalkboard.colorNext = function() {
+        if (originalColorNext) {
+          originalColorNext.call(this);
+        }
+
+        setTimeout(() => {
+          const palettes = document.querySelectorAll('.palette');
+          palettes.forEach((palette: Element) => {
+            const activeButton = palette.querySelector('li.active');
+            if (activeButton) {
+              const currentIndex = parseInt(activeButton.getAttribute('data-color') || '0');
+              const colorButtons = palette.querySelectorAll('li[data-color]');
+              const nextIndex = (currentIndex + 1) % colorButtons.length;
+              updatePaletteHighlight(palette, nextIndex);
+            }
+          });
+        }, 10);
+      };
+
+      // Override colorPrev
+      chalkboard.colorPrev = function() {
+        if (originalColorPrev) {
+          originalColorPrev.call(this);
+        }
+
+        setTimeout(() => {
+          const palettes = document.querySelectorAll('.palette');
+          palettes.forEach((palette: Element) => {
+            const activeButton = palette.querySelector('li.active');
+            if (activeButton) {
+              const currentIndex = parseInt(activeButton.getAttribute('data-color') || '0');
+              const colorButtons = palette.querySelectorAll('li[data-color]');
+              const prevIndex = currentIndex === 0 ? colorButtons.length - 1 : currentIndex - 1;
+              updatePaletteHighlight(palette, prevIndex);
+            }
+          });
+        }, 10);
+      };
+    }
+
     Reveal.addEventListener('ready', event => {
       Unselecter(panel.content);
       // check and set the scrolling slide when you start the whole thing
       setScrollingSlide();
       autoSelectHook(panel.content);
+
+      // Customize chalkboard palette after reveal is ready
+      if (enable_chalkboard) {
+        setTimeout(customizeChalkboardPalette, 500);
+      }
     });
 
     Reveal.addEventListener('slidechanged', event => {
@@ -1084,6 +1433,13 @@ namespace Rise {
       autoSelectHook(panel.content);
     });
 
+document.addEventListener('keydown', (event: KeyboardEvent) => { //? button
+  if (event.shiftKey && event.key === '?') {
+    event.preventDefault();
+    displayRiseHelp(commands, trans);
+  }
+});
+
     // Sync when an output is generated.
     setupOutputObserver();
 
@@ -1093,7 +1449,7 @@ namespace Rise {
 
     if (!complete_config.show_buttons_on_startup) {
       /* safer, and nicer too, to wait for reveal extensions to start */
-      setTimeout(toggleAllRiseButtons, 2000);
+      setTimeout(toggleAllRiseButtons, 5000);  // Question mark disappears 5 seconds after opening slideshow
     }
 
     panel.content.activeCellChanged.connect((sender, cell) => {
@@ -1108,6 +1464,79 @@ namespace Rise {
         Reveal.slide(i.h, i.v, i.f);
       }
     });
+
+    /* ! ! ! THE FOLLOWING KEYBOARD-EVENT CODE BLOCK BELONGS BENEATH THE IMPROVED CHALKBOARD ! ! !
+    Keyboard shortcuts specific to RISE (add more shortcuts here manually):  
+    */  
+    document.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (!document.body.classList.contains('rise-enabled')) return;    //if slides are not opened, do nothing
+
+      const k = event.key;
+      const isKey =
+        k === 'f' || k === 'F' ||
+        k === 'l' || k === 'L' ||
+        k === 'p' || k === 'P' ||  
+        k === 'd' || k === 'D' ||
+        k === 's' || k === 'S' ||
+        k === 'q' || k === 'Q' ||
+        k === '.' ||
+        k === '?' ||
+        k === '=' ||
+        k === '-';
+        
+      if (!isKey) return;
+
+      event.stopImmediatePropagation(); //prevents other event-listeners to be executed for the same elements
+      event.preventDefault(); //prevents defult action from browser
+      switch (k) {
+
+        case '?':
+          displayRiseHelp(commands, trans);
+          break;
+
+        case '.':
+          Reveal.togglePause();
+          break;
+
+        case 'f': //open fullscreen
+        case 'F':
+          fullscreenHelp();
+          break;
+
+        case 'l': //open (not working) chalkboard
+        case 'L':
+          (window as any).RevealChalkboard?.toggleChalkboard();
+          break;
+
+        case 'p': //open working chalkboard
+        case 'P': 
+          (window as any).RevealChalkboard?.toggleNotesCanvas();
+          break;
+
+        case '=': //reset chalkboard data on current slide
+          (window as any).RevealChalkboard?.reset();
+          break;
+
+        case '-': //clear full size chalkboard
+          (window as any).RevealChalkboard?.clear();
+          break;
+
+        case 'd': //download chalkboard data
+        case 'D':
+          (window as any).RevealChalkboard?.download();
+          break;
+      
+        case 's': //next chalkboard color
+        case 'S':
+          (window as any).RevealChalkboard?.colorNext();
+          break;
+
+        case 'q': //previous chalkboard color
+        case 'Q':
+          (window as any).RevealChalkboard?.colorPrev();
+         break;
+      }
+    }, true);
   }
 
   function Unselecter(notebook: Notebook) {
@@ -1124,7 +1553,7 @@ namespace Rise {
     // Preparing the new reveal-compatible structure
     const selected_slide = markupSlides(notebook);
     // Adding the reveal stuff
-    Revealer(panel, selected_slide);
+    Revealer(panel, selected_slide, commands, trans);
     // Minor modifications for usability
     addHelpButton(panel, commands, trans);
   }
@@ -1158,6 +1587,9 @@ namespace Rise {
     <li><kbd>${CommandRegistry.formatKeystroke('Alt R')}</kbd>: ${trans.__(
       'enter/exit RISE'
     )}</li>
+    <li><kbd>${CommandRegistry.formatKeystroke('Shift C')}</kbd>: ${trans.__(
+    'change font size'
+    )}</li>
     <li><kbd>${CommandRegistry.formatKeystroke('Space')}</kbd>: ${trans.__(
       'next'
     )}</li>
@@ -1171,10 +1603,13 @@ namespace Rise {
     ${helpListItem(CommandIDs.riseLastSlide)}
     ${helpListItem(CommandIDs.riseToggleOverview)}
     ${helpListItem(CommandIDs.riseNotesOpen)}
+    <li><kbd>${CommandRegistry.formatKeystroke('F')}</kbd>: ${trans.__(
+      'open fullscreen'
+    )}</li>
     <li><kbd>${CommandRegistry.formatKeystroke(',')}</kbd>: ${
       helpStrings[CommandIDs.riseToggleAllButtons]
     }</li>
-    <li><kbd>${CommandRegistry.formatKeystroke('/')}</kbd>: ${trans.__(
+    <li><kbd>${CommandRegistry.formatKeystroke('.')}</kbd>: ${trans.__(
       'black screen'
     )}</li>
     <li><strong>${trans.__('less useful')}:</strong></li>
@@ -1216,7 +1651,8 @@ namespace Rise {
     await showDialog({
       title: trans.__('Reveal Shortcuts Help'),
       body: new Widget({ node }),
-      buttons: [Dialog.warnButton({ label: trans.__('OK') })]
+      buttons: [Dialog.warnButton({ label: trans.__('OK') })],
+      host: document.querySelector('.reveal') as HTMLElement //!!!
     });
   }
 
@@ -1244,6 +1680,7 @@ namespace Rise {
   } {
     if (Object.keys(reveal_helpstr).length === 0) {
       // RISE/reveal.js API calls
+      reveal_helpstr[CommandIDs.riseFontSizeCommand] = trans.__('set font sizes')
       reveal_helpstr[CommandIDs.riseFirstSlide] = trans.__(
         'jump to first slide'
       );
