@@ -68,6 +68,12 @@ async function createModule(scope, module) {
 async function main() {
   const rise = require('jupyterlab-rise-application');
 
+  // Provide @jupyterlab/console in the shared scope: ipywidgets 8's
+  // widget manager (@jupyter-widgets/jupyterlab-manager 5) imports it and
+  // fails to load without it, so widgets rendered as plain text (#119).
+  // Webpack only shares modules the app itself imports.
+  require('@jupyterlab/console');
+
   const mimeExtensionsMods = [
     require('@jupyterlab/javascript-extension'),
     require('@jupyterlab/json-extension'),

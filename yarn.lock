@@ -14958,6 +14958,7 @@ __metadata:
     "@jupyterlab/builder": "npm:^4.1.0"
     "@jupyterlab/buildutils": "npm:^4.1.0"
     "@jupyterlab/codemirror-extension": "npm:^4.1.0"
+    "@jupyterlab/console": "npm:^4.3.4"
     "@jupyterlab/coreutils": "npm:^6.1.0"
     "@jupyterlab/docmanager-extension": "npm:^4.1.0"
     "@jupyterlab/javascript-extension": "npm:^4.1.0"
