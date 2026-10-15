@@ -110,7 +110,7 @@ jobs:
     - name: Install the extension
       run: |
         set -eux
-        python -m pip install "jupyterlab>=4.0.0,<5" jupyterlab_rise*.whl
+        python -m pip install "jupyterlab>=4.0.0,<5" "ipywidgets>=8" jupyterlab_rise*.whl
 
     - name: Install dependencies
       working-directory: ui-tests
